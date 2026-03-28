@@ -70,17 +70,25 @@ export function TaskCard({ task, onStatusChange }: TaskCardProps) {
             )}
           </div>
           <div className="flex rounded-lg overflow-hidden border border-border shrink-0">
-            {statuses.map((s) => (
-              <button
-                key={s}
-                onClick={() => onStatusChange(task.id, s)}
-                className={`px-2 py-1 text-[10px] font-medium transition-colors ${
-                  task.status === s ? statusStyles[s] : "hover:bg-muted/50"
-                }`}
-              >
-                {statusLabels[s]}
-              </button>
-            ))}
+            {statuses.map((s) => {
+              const abbrevLabels: Record<TaskStatus, string> = {
+                todo: "T",
+                in_progress: "IP",
+                done: "D",
+              };
+              return (
+                <button
+                  key={s}
+                  onClick={() => onStatusChange(task.id, s)}
+                  className={`px-2 py-1 text-[10px] font-medium transition-colors ${
+                    task.status === s ? statusStyles[s] : "hover:bg-muted/50"
+                  }`}
+                >
+                  <span className="sm:hidden">{abbrevLabels[s]}</span>
+                  <span className="hidden sm:inline">{statusLabels[s]}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
       </CardContent>

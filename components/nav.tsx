@@ -68,7 +68,7 @@ export function Nav({ userName }: NavProps) {
             {locale === "en" ? "JA" : "EN"}
           </button>
           <Select value={currency} onValueChange={(v) => setCurrency(v as Currency)}>
-            <SelectTrigger className="w-[100px] h-8 bg-white/10 border-white/20 text-white text-sm">
+            <SelectTrigger className="w-[80px] sm:w-[100px] h-8 bg-white/10 border-white/20 text-white text-sm">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -80,7 +80,7 @@ export function Nav({ userName }: NavProps) {
             </SelectContent>
           </Select>
           {userName && (
-            <div className="h-8 px-3 rounded-full bg-gold/20 text-gold text-sm font-medium flex items-center">
+            <div className="h-8 px-3 rounded-full bg-gold/20 text-gold text-sm font-medium hidden sm:flex items-center">
               {userName}
             </div>
           )}
