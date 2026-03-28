@@ -1,21 +1,8 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
+import { useLocale } from "./locale-provider";
 import type { VisaStep, VisaStepStatus } from "@/lib/types";
-
-const phaseInfo: Record<string, { label: string; period: string }> = {
-  A: { label: "Foundation", period: "Apr–Jun 2026" },
-  B: { label: "Income Building", period: "May–Aug 2026" },
-  C: { label: "Visa Application", period: "Aug–Sep 2026" },
-  D: { label: "Relocation", period: "Oct–Nov 2026" },
-};
-
-const statusStyles: Record<VisaStepStatus, { bg: string; text: string; label: string }> = {
-  pending: { bg: "bg-muted", text: "text-muted-foreground", label: "Pending" },
-  in_progress: { bg: "bg-gold/20", text: "text-amber-700", label: "In Progress" },
-  completed: { bg: "bg-success/15", text: "text-success", label: "Completed" },
-  blocked: { bg: "bg-primary/15", text: "text-primary", label: "Blocked" },
-};
 
 const statusDotColors: Record<VisaStepStatus, string> = {
   pending: "bg-muted-foreground/30",
@@ -31,7 +18,22 @@ type VisaTimelineProps = {
 };
 
 export function VisaTimeline({ steps, onToggle, onNotesChange }: VisaTimelineProps) {
+  const { t } = useLocale();
   const phases = ["A", "B", "C", "D"] as const;
+
+  const phaseInfo: Record<string, { labelKey: string; periodKey: string }> = {
+    A: { labelKey: "visa.phase.a", periodKey: "visa.phase.a.period" },
+    B: { labelKey: "visa.phase.b", periodKey: "visa.phase.b.period" },
+    C: { labelKey: "visa.phase.c", periodKey: "visa.phase.c.period" },
+    D: { labelKey: "visa.phase.d", periodKey: "visa.phase.d.period" },
+  };
+
+  const statusStyles: Record<VisaStepStatus, { bg: string; text: string; labelKey: string }> = {
+    pending: { bg: "bg-muted", text: "text-muted-foreground", labelKey: "visa.status.pending" },
+    in_progress: { bg: "bg-gold/20", text: "text-amber-700", labelKey: "visa.status.in_progress" },
+    completed: { bg: "bg-success/15", text: "text-success", labelKey: "visa.status.completed" },
+    blocked: { bg: "bg-primary/15", text: "text-primary", labelKey: "visa.status.blocked" },
+  };
 
   return (
     <div className="space-y-8">
@@ -47,9 +49,9 @@ export function VisaTimeline({ steps, onToggle, onNotesChange }: VisaTimelinePro
                 {phase}
               </div>
               <div>
-                <h3 className="font-bold text-navy">{info.label}</h3>
+                <h3 className="font-bold text-navy">{t(info.labelKey)}</h3>
                 <p className="text-xs text-muted-foreground">
-                  {info.period} • {completed}/{phaseSteps.length} done
+                  {t(info.periodKey)} • {completed}/{phaseSteps.length} {t("visa.done")}
                 </p>
               </div>
             </div>
@@ -83,7 +85,7 @@ export function VisaTimeline({ steps, onToggle, onNotesChange }: VisaTimelinePro
                           )}
                           {step.dueDate && (
                             <p className="text-xs text-muted-foreground mt-1">
-                              Due: {new Date(step.dueDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                              {t("task.due")} {new Date(step.dueDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                             </p>
                           )}
                         </div>
@@ -92,14 +94,14 @@ export function VisaTimeline({ steps, onToggle, onNotesChange }: VisaTimelinePro
                           className="shrink-0"
                         >
                           <Badge className={`${style.bg} ${style.text} border-0 cursor-pointer hover:opacity-80`}>
-                            {style.label}
+                            {t(style.labelKey)}
                           </Badge>
                         </button>
                       </div>
 
                       <textarea
                         className="mt-2 w-full text-xs bg-transparent border border-border rounded px-2 py-1 resize-none placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/30"
-                        placeholder="Add notes..."
+                        placeholder={t("visa.notes.placeholder")}
                         rows={1}
                         value={step.notes || ""}
                         onChange={(e) => onNotesChange(step.id, e.target.value)}

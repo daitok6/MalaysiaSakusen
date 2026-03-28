@@ -9,6 +9,7 @@ import { ProgressBar } from "@/components/progress-bar";
 import { Money } from "@/components/money";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useLocale } from "@/components/locale-provider";
 import type { Task, SavingsEntry, VisaStep } from "@/lib/types";
 
 export default function DashboardPage() {
@@ -16,6 +17,7 @@ export default function DashboardPage() {
   const [savings, setSavings] = useState<SavingsEntry[]>([]);
   const [visaSteps, setVisaSteps] = useState<VisaStep[]>([]);
   const [loading, setLoading] = useState(true);
+  const { t } = useLocale();
 
   useEffect(() => {
     Promise.all([
@@ -35,7 +37,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <p className="text-muted-foreground">Loading your journey...</p>
+        <p className="text-muted-foreground">{t("dashboard.loading")}</p>
       </div>
     );
   }
@@ -55,15 +57,15 @@ export default function DashboardPage() {
   const visaPercent = visaSteps.length > 0 ? Math.round((completedVisaSteps / visaSteps.length) * 100) : 0;
 
   const currentPhase = visaSteps.find((s) => s.status === "in_progress")?.phase ?? "A";
-  const phaseLabels: Record<string, string> = {
-    A: "Foundation",
-    B: "Income Building",
-    C: "Visa Application",
-    D: "Relocation",
+  const phaseKeys: Record<string, string> = {
+    A: "visa.phase.a",
+    B: "visa.phase.b",
+    C: "visa.phase.c",
+    D: "visa.phase.d",
   };
 
   const upcoming = tasks
-    .filter((t) => t.status !== "done" && t.deadline)
+    .filter((task) => task.status !== "done" && task.deadline)
     .sort((a, b) => new Date(a.deadline!).getTime() - new Date(b.deadline!).getTime())
     .slice(0, 5);
 
@@ -81,7 +83,7 @@ export default function DashboardPage() {
       <Card className="overflow-hidden">
         <CardContent className="pt-6 pb-4">
           <h2 className="text-center text-navy font-bold text-lg mb-4">
-            Your Journey to Malaysia
+            {t("dashboard.hero.title")}
           </h2>
           <FlightPath />
         </CardContent>
@@ -92,30 +94,30 @@ export default function DashboardPage() {
         <Countdown />
         <StatCard
           icon="✅"
-          label="Tasks Completed"
+          label={t("dashboard.stats.tasks")}
           value={`${taskPercent}%`}
-          subtitle={`${doneTasks} of ${totalTasks} tasks`}
+          subtitle={`${doneTasks} / ${totalTasks}`}
         />
         <StatCard
           icon="💰"
-          label="Savings Progress"
+          label={t("dashboard.stats.savings")}
           value={<Money amount={currentSavings} from="JPY" />}
-          subtitle={`of ¥1,200,000 target`}
+          subtitle={t("dashboard.stats.savingsTarget")}
         />
         <StatCard
           icon="📄"
-          label="Visa Status"
-          value={`Phase ${currentPhase}`}
-          subtitle={`${phaseLabels[currentPhase]} • ${visaPercent}%`}
+          label={t("dashboard.stats.visa")}
+          value={`${t("dashboard.stats.phase")} ${currentPhase}`}
+          subtitle={`${t(phaseKeys[currentPhase])} • ${visaPercent}%`}
         />
       </div>
 
       {/* Progress Bars */}
       <Card>
         <CardContent className="pt-6 space-y-4">
-          <ProgressBar value={taskPercent} label="Overall Progress" />
-          <ProgressBar value={savingsPercent} label="Savings Target" />
-          <ProgressBar value={visaPercent} label="Visa Steps" />
+          <ProgressBar value={taskPercent} label={t("dashboard.progress.overall")} />
+          <ProgressBar value={savingsPercent} label={t("dashboard.progress.savings")} />
+          <ProgressBar value={visaPercent} label={t("dashboard.progress.visa")} />
         </CardContent>
       </Card>
 
@@ -125,11 +127,11 @@ export default function DashboardPage() {
       {/* Upcoming Deadlines */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-navy text-base">Upcoming Deadlines</CardTitle>
+          <CardTitle className="text-navy text-base">{t("dashboard.deadlines.title")}</CardTitle>
         </CardHeader>
         <CardContent>
           {upcoming.length === 0 ? (
-            <p className="text-muted-foreground text-sm">No upcoming deadlines — you're all caught up!</p>
+            <p className="text-muted-foreground text-sm">{t("dashboard.deadlines.empty")}</p>
           ) : (
             <div className="space-y-3">
               {upcoming.map((task) => (
@@ -162,7 +164,7 @@ export default function DashboardPage() {
                         : ""
                     }
                   >
-                    {task.priority}
+                    {t(`priority.${task.priority}`)}
                   </Badge>
                 </div>
               ))}

@@ -1,12 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useLocale } from "./locale-provider";
 
 const START_DATE = new Date("2026-03-28");
 const TARGET_DATE = new Date("2026-11-01");
 
 export function FlightPath() {
   const [progress, setProgress] = useState(0);
+  const { t } = useLocale();
 
   useEffect(() => {
     const now = new Date();
@@ -21,9 +23,9 @@ export function FlightPath() {
   const endX = 540;
   const arcY = 30;
 
-  const t = progress;
-  const x = startX + t * (endX - startX);
-  const y = height - 20 - 4 * arcY * t * (1 - t);
+  const tVal = progress;
+  const x = startX + tVal * (endX - startX);
+  const y = height - 20 - 4 * arcY * tVal * (1 - tVal);
 
   return (
     <div className="w-full overflow-hidden">
@@ -41,13 +43,13 @@ export function FlightPath() {
           fill="none"
           stroke="#C4706E"
           strokeWidth="2.5"
-          strokeDasharray={`${t * 650} 650`}
+          strokeDasharray={`${tVal * 650} 650`}
         />
         <text x={startX} y={height - 2} textAnchor="middle" className="fill-navy text-xs font-medium">
-          Tokyo
+          {t("flight.tokyo")}
         </text>
         <text x={endX} y={height - 2} textAnchor="middle" className="fill-navy text-xs font-medium">
-          Kuala Lumpur
+          {t("flight.kl")}
         </text>
         <text x={x} y={y} textAnchor="middle" fontSize="20" className="select-none">
           ✈️

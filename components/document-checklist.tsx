@@ -2,13 +2,8 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useLocale } from "./locale-provider";
 import type { TrackerDocument, DocumentStatus } from "@/lib/types";
-
-const statusStyles: Record<DocumentStatus, { bg: string; text: string; label: string }> = {
-  not_started: { bg: "bg-muted", text: "text-muted-foreground", label: "Not Started" },
-  in_progress: { bg: "bg-gold/20", text: "text-amber-700", label: "In Progress" },
-  ready: { bg: "bg-success/15", text: "text-success", label: "Ready" },
-};
 
 type DocumentChecklistProps = {
   documents: TrackerDocument[];
@@ -16,15 +11,22 @@ type DocumentChecklistProps = {
 };
 
 export function DocumentChecklist({ documents, onStatusChange }: DocumentChecklistProps) {
+  const { t } = useLocale();
   const ready = documents.filter((d) => d.status === "ready").length;
+
+  const statusStyles: Record<DocumentStatus, { bg: string; text: string; labelKey: string }> = {
+    not_started: { bg: "bg-muted", text: "text-muted-foreground", labelKey: "visa.docs.notStarted" },
+    in_progress: { bg: "bg-gold/20", text: "text-amber-700", labelKey: "visa.docs.inProgress" },
+    ready: { bg: "bg-success/15", text: "text-success", labelKey: "visa.docs.readyStatus" },
+  };
 
   return (
     <Card>
       <CardHeader className="pb-3">
         <CardTitle className="text-base text-navy flex items-center justify-between">
-          <span>📁 Required Documents</span>
+          <span>📁 {t("visa.docs.title")}</span>
           <span className="text-sm font-normal text-muted-foreground">
-            {ready}/{documents.length} ready
+            {ready}/{documents.length} {t("visa.docs.ready")}
           </span>
         </CardTitle>
       </CardHeader>
@@ -53,7 +55,7 @@ export function DocumentChecklist({ documents, onStatusChange }: DocumentCheckli
               </div>
               <button onClick={() => onStatusChange(doc.id, nextStatus)}>
                 <Badge className={`${style.bg} ${style.text} border-0 cursor-pointer hover:opacity-80 text-xs`}>
-                  {style.label}
+                  {t(style.labelKey)}
                 </Badge>
               </button>
             </div>

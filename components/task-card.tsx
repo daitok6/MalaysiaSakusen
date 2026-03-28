@@ -2,6 +2,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useLocale } from "./locale-provider";
 import type { Task, TaskStatus } from "@/lib/types";
 
 const priorityStyles: Record<string, string> = {
@@ -9,12 +10,6 @@ const priorityStyles: Record<string, string> = {
   high: "bg-gold/15 text-amber-700 border-gold/30",
   medium: "bg-navy/10 text-navy border-navy/20",
   low: "bg-muted text-muted-foreground border-border",
-};
-
-const statusLabels: Record<TaskStatus, string> = {
-  todo: "Todo",
-  in_progress: "In Progress",
-  done: "Done",
 };
 
 const statusStyles: Record<TaskStatus, string> = {
@@ -29,8 +24,15 @@ type TaskCardProps = {
 };
 
 export function TaskCard({ task, onStatusChange }: TaskCardProps) {
+  const { t } = useLocale();
   const isOverdue = task.deadline && new Date(task.deadline) < new Date() && task.status !== "done";
   const statuses: TaskStatus[] = ["todo", "in_progress", "done"];
+
+  const statusLabels: Record<TaskStatus, string> = {
+    todo: t("status.todo"),
+    in_progress: t("status.in_progress"),
+    done: t("status.done"),
+  };
 
   return (
     <Card className={`transition-all ${task.status === "done" ? "opacity-60" : ""} ${isOverdue ? "border-primary/50" : ""}`}>
@@ -39,7 +41,7 @@ export function TaskCard({ task, onStatusChange }: TaskCardProps) {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1.5 flex-wrap">
               <Badge variant="outline" className={`text-[10px] ${priorityStyles[task.priority]}`}>
-                {task.priority}
+                {t(`priority.${task.priority}`)}
               </Badge>
               {task.assignee && (
                 <Badge variant="outline" className="text-[10px]">
@@ -48,7 +50,7 @@ export function TaskCard({ task, onStatusChange }: TaskCardProps) {
               )}
               {task.dependsOn && task.dependsOn.length > 0 && (
                 <span className="text-[10px] text-muted-foreground">
-                  Needs: {task.dependsOn.join(", ")}
+                  {t("task.needs")} {task.dependsOn.join(", ")}
                 </span>
               )}
             </div>
@@ -58,7 +60,7 @@ export function TaskCard({ task, onStatusChange }: TaskCardProps) {
             </p>
             {task.deadline && (
               <p className={`text-xs mt-1 ${isOverdue ? "text-primary font-medium" : "text-muted-foreground"}`}>
-                {isOverdue ? "Overdue: " : "Due: "}
+                {isOverdue ? t("task.overdue") + " " : t("task.due") + " "}
                 {new Date(task.deadline).toLocaleDateString("en-US", {
                   month: "short",
                   day: "numeric",

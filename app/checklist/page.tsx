@@ -11,14 +11,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useLocale } from "@/components/locale-provider";
 import type { Task, TaskCategory, TaskStatus } from "@/lib/types";
 
-const categories: { value: TaskCategory; label: string; icon: string }[] = [
-  { value: "visa", label: "Visa & Legal", icon: "📄" },
-  { value: "income", label: "Income", icon: "💰" },
-  { value: "business", label: "Business", icon: "🚀" },
-  { value: "life", label: "Life & Logistics", icon: "🏠" },
-  { value: "tech", label: "Tech", icon: "💻" },
+const categories: { value: TaskCategory; labelKey: string; icon: string }[] = [
+  { value: "visa", labelKey: "checklist.category.visa", icon: "📄" },
+  { value: "income", labelKey: "checklist.category.income", icon: "💰" },
+  { value: "business", labelKey: "checklist.category.business", icon: "🚀" },
+  { value: "life", labelKey: "checklist.category.life", icon: "🏠" },
+  { value: "tech", labelKey: "checklist.category.tech", icon: "💻" },
 ];
 
 export default function ChecklistPage() {
@@ -27,6 +28,7 @@ export default function ChecklistPage() {
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [filterAssignee, setFilterAssignee] = useState<string>("all");
   const [filterPriority, setFilterPriority] = useState<string>("all");
+  const { t } = useLocale();
 
   useEffect(() => {
     fetch("/api/tasks")
@@ -73,7 +75,7 @@ export default function ChecklistPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <p className="text-muted-foreground">Loading checklist...</p>
+        <p className="text-muted-foreground">{t("checklist.loading")}</p>
       </div>
     );
   }
@@ -81,9 +83,9 @@ export default function ChecklistPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-navy">Checklist</h1>
+        <h1 className="text-2xl font-bold text-navy">{t("checklist.title")}</h1>
         <p className="text-muted-foreground text-sm mt-1">
-          Track every step of your Malaysia move
+          {t("checklist.subtitle")}
         </p>
       </div>
 
@@ -94,10 +96,10 @@ export default function ChecklistPage() {
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Status</SelectItem>
-            <SelectItem value="todo">Todo</SelectItem>
-            <SelectItem value="in_progress">In Progress</SelectItem>
-            <SelectItem value="done">Done</SelectItem>
+            <SelectItem value="all">{t("checklist.filter.allStatus")}</SelectItem>
+            <SelectItem value="todo">{t("status.todo")}</SelectItem>
+            <SelectItem value="in_progress">{t("status.in_progress")}</SelectItem>
+            <SelectItem value="done">{t("status.done")}</SelectItem>
           </SelectContent>
         </Select>
         <Select value={filterAssignee} onValueChange={(v) => setFilterAssignee(v ?? "all")}>
@@ -105,7 +107,7 @@ export default function ChecklistPage() {
             <SelectValue placeholder="Assignee" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Everyone</SelectItem>
+            <SelectItem value="all">{t("checklist.filter.everyone")}</SelectItem>
             {assignees.map((a) => (
               <SelectItem key={a} value={a}>
                 {a}
@@ -118,11 +120,11 @@ export default function ChecklistPage() {
             <SelectValue placeholder="Priority" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Priority</SelectItem>
-            <SelectItem value="critical">Critical</SelectItem>
-            <SelectItem value="high">High</SelectItem>
-            <SelectItem value="medium">Medium</SelectItem>
-            <SelectItem value="low">Low</SelectItem>
+            <SelectItem value="all">{t("checklist.filter.allPriority")}</SelectItem>
+            <SelectItem value="critical">{t("priority.critical")}</SelectItem>
+            <SelectItem value="high">{t("priority.high")}</SelectItem>
+            <SelectItem value="medium">{t("priority.medium")}</SelectItem>
+            <SelectItem value="low">{t("priority.low")}</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -136,7 +138,7 @@ export default function ChecklistPage() {
             return (
               <TabsTrigger key={cat.value} value={cat.value} className="text-sm">
                 <span className="mr-1">{cat.icon}</span>
-                {cat.label}
+                {t(cat.labelKey)}
                 <span className="ml-1.5 text-xs text-muted-foreground">
                   {done}/{catTasks.length}
                 </span>
@@ -146,26 +148,26 @@ export default function ChecklistPage() {
         </TabsList>
 
         {categories.map((cat) => {
-          const catTasks = tasks.filter((t) => t.category === cat.value);
+          const catTasks = tasks.filter((task) => task.category === cat.value);
           const filtered = filterTasks(catTasks);
-          const done = catTasks.filter((t) => t.status === "done").length;
+          const done = catTasks.filter((task) => task.status === "done").length;
           const percent = catTasks.length > 0 ? Math.round((done / catTasks.length) * 100) : 0;
 
           return (
             <TabsContent key={cat.value} value={cat.value} className="space-y-4 mt-4">
-              <ProgressBar value={percent} label={`${cat.label} Progress`} />
+              <ProgressBar value={percent} label={`${t(cat.labelKey)} Progress`} />
 
               {percent === 100 && (
                 <div className="text-center py-4 rounded-xl bg-success/10 border border-success/30">
                   <p className="text-2xl mb-1">🎉</p>
-                  <p className="font-bold text-success">Boleh! Category complete!</p>
+                  <p className="font-bold text-success">{t("checklist.complete")}</p>
                 </div>
               )}
 
               <div className="space-y-2">
                 {filtered.length === 0 ? (
                   <p className="text-muted-foreground text-sm text-center py-8">
-                    No tasks match your filters
+                    {t("checklist.empty")}
                   </p>
                 ) : (
                   filtered.map((task) => (

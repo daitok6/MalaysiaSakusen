@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCurrency } from "./currency-provider";
+import { useLocale } from "./locale-provider";
 import type { Currency } from "@/lib/types";
 import {
   Select,
@@ -12,11 +13,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const navItems = [
-  { href: "/", label: "Dashboard", icon: "🏠" },
-  { href: "/checklist", label: "Checklist", icon: "✅" },
-  { href: "/finances", label: "Finances", icon: "💰" },
-  { href: "/visa", label: "Visa", icon: "📄" },
+const navKeys = [
+  { href: "/", key: "nav.dashboard", icon: "🏠" },
+  { href: "/checklist", key: "nav.checklist", icon: "✅" },
+  { href: "/finances", key: "nav.finances", icon: "💰" },
+  { href: "/visa", key: "nav.visa", icon: "📄" },
 ];
 
 const currencyOptions: { value: Currency; label: string }[] = [
@@ -32,6 +33,7 @@ type NavProps = {
 export function Nav({ userName }: NavProps) {
   const pathname = usePathname();
   const { currency, setCurrency } = useCurrency();
+  const { locale, setLocale, t } = useLocale();
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-navy text-white">
@@ -42,7 +44,7 @@ export function Nav({ userName }: NavProps) {
             <span>Sakusen</span>
           </Link>
           <nav className="hidden md:flex items-center gap-1">
-            {navItems.map((item) => (
+            {navKeys.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -53,12 +55,18 @@ export function Nav({ userName }: NavProps) {
                 }`}
               >
                 <span className="mr-1.5">{item.icon}</span>
-                {item.label}
+                {t(item.key)}
               </Link>
             ))}
           </nav>
         </div>
         <div className="flex items-center gap-3">
+          <button
+            onClick={() => setLocale(locale === "en" ? "ja" : "en")}
+            className="h-8 px-2 rounded-md bg-white/10 text-white text-sm font-medium hover:bg-white/20 transition-colors"
+          >
+            {locale === "en" ? "JA" : "EN"}
+          </button>
           <Select value={currency} onValueChange={(v) => setCurrency(v as Currency)}>
             <SelectTrigger className="w-[100px] h-8 bg-white/10 border-white/20 text-white text-sm">
               <SelectValue />
@@ -80,7 +88,7 @@ export function Nav({ userName }: NavProps) {
       </div>
       {/* Mobile nav */}
       <nav className="md:hidden flex border-t border-white/10">
-        {navItems.map((item) => (
+        {navKeys.map((item) => (
           <Link
             key={item.href}
             href={item.href}
@@ -91,7 +99,7 @@ export function Nav({ userName }: NavProps) {
             }`}
           >
             <div className="text-lg">{item.icon}</div>
-            {item.label}
+            {t(item.key)}
           </Link>
         ))}
       </nav>

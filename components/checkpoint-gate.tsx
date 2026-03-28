@@ -2,6 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Money } from "@/components/money";
+import { useLocale } from "./locale-provider";
 import type { SavingsEntry } from "@/lib/types";
 
 type CheckpointGateProps = {
@@ -9,6 +10,7 @@ type CheckpointGateProps = {
 };
 
 export function CheckpointGate({ savings }: CheckpointGateProps) {
+  const { t } = useLocale();
   const throughAug = savings.filter((s) => s.month <= "2026-08");
   const totalSaved = throughAug.reduce(
     (sum, s) => sum + (s.actualSalary ?? 0) + (s.actualSideIncome ?? 0),
@@ -20,12 +22,12 @@ export function CheckpointGate({ savings }: CheckpointGateProps) {
 
   const checks = [
     {
-      label: "Savings ≥ ¥400,000",
+      label: t("finances.checkpoint.savings"),
       passed: totalSaved >= 400000,
       display: <Money amount={totalSaved} from="JPY" />,
     },
     {
-      label: "Side income ≥ ¥80,000/mo",
+      label: t("finances.checkpoint.income"),
       passed: latestSideIncome >= 80000,
       display: <Money amount={latestSideIncome} from="JPY" />,
     },
@@ -35,7 +37,7 @@ export function CheckpointGate({ savings }: CheckpointGateProps) {
     <Card className="border-gold/40 bg-gradient-to-br from-gold/5 to-transparent">
       <CardHeader className="pb-3">
         <CardTitle className="text-base text-navy flex items-center gap-2">
-          🚦 August Checkpoint Gate
+          🚦 {t("finances.checkpoint.title")}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
@@ -51,7 +53,7 @@ export function CheckpointGate({ savings }: CheckpointGateProps) {
           </div>
         ))}
         <p className="text-xs text-muted-foreground mt-2">
-          If not met by August, delay move to December 2026.
+          {t("finances.checkpoint.warning")}
         </p>
       </CardContent>
     </Card>

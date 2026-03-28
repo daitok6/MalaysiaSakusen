@@ -9,6 +9,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { useLocale } from "./locale-provider";
 
 export function useCurrentUser() {
   const [user, setUser] = useState<string | null>(null);
@@ -33,15 +34,17 @@ type UserPickerModalProps = {
 };
 
 export function UserPickerModal({ userNames, onSelect, open }: UserPickerModalProps) {
+  const { t } = useLocale();
+
   return (
     <Dialog open={open}>
       <DialogContent className="sm:max-w-md" showCloseButton={false}>
         <DialogHeader>
           <DialogTitle className="text-navy text-center text-xl">
-            Welcome to Sakusen! 🌟
+            {t("user.welcome")}
           </DialogTitle>
           <DialogDescription className="text-center">
-            Who are you? This helps us track who did what.
+            {t("user.prompt")}
           </DialogDescription>
         </DialogHeader>
         <div className="flex gap-4 justify-center pt-4">

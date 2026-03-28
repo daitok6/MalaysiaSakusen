@@ -2,14 +2,17 @@
 
 import { useState, useEffect } from "react";
 import { encouragements } from "@/lib/encouragements";
+import { useLocale } from "./locale-provider";
 
 export function EncouragementBanner() {
   const [message, setMessage] = useState("");
+  const { locale } = useLocale();
 
   useEffect(() => {
-    const idx = Math.floor(Math.random() * encouragements.length);
-    setMessage(encouragements[idx]);
-  }, []);
+    const msgs = encouragements[locale];
+    const idx = Math.floor(Math.random() * msgs.length);
+    setMessage(msgs[idx]);
+  }, [locale]);
 
   if (!message) return null;
 

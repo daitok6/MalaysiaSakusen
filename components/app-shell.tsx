@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { CurrencyProvider } from "./currency-provider";
+import { LocaleProvider } from "./locale-provider";
 import { Nav } from "./nav";
 import { UserPickerModal, useCurrentUser } from "./user-picker-modal";
 
@@ -28,14 +29,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   if (!mounted) return null;
 
   return (
-    <CurrencyProvider>
-      <Nav userName={user} />
-      <UserPickerModal
-        userNames={userNames}
-        onSelect={selectUser}
-        open={!user}
-      />
-      <main className="container mx-auto px-4 py-6">{children}</main>
-    </CurrencyProvider>
+    <LocaleProvider>
+      <CurrencyProvider>
+        <Nav userName={user} />
+        <UserPickerModal
+          userNames={userNames}
+          onSelect={selectUser}
+          open={!user}
+        />
+        <main className="container mx-auto px-4 py-6">{children}</main>
+      </CurrencyProvider>
+    </LocaleProvider>
   );
 }

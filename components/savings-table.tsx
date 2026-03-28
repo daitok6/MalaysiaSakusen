@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Money } from "@/components/money";
+import { useLocale } from "./locale-provider";
 import {
   Table,
   TableBody,
@@ -30,6 +31,7 @@ function formatMonth(month: string): string {
 export function SavingsTable({ savings, onUpdate }: SavingsTableProps) {
   const [editing, setEditing] = useState<{ month: string; field: string } | null>(null);
   const [editValue, setEditValue] = useState("");
+  const { t } = useLocale();
 
   const startEdit = (month: string, field: string, currentValue?: number) => {
     setEditing({ month, field });
@@ -48,13 +50,13 @@ export function SavingsTable({ savings, onUpdate }: SavingsTableProps) {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Month</TableHead>
-            <TableHead className="text-right">Salary (Projected)</TableHead>
-            <TableHead className="text-right">Salary (Actual)</TableHead>
-            <TableHead className="text-right">Side Income (Projected)</TableHead>
-            <TableHead className="text-right">Side Income (Actual)</TableHead>
-            <TableHead className="text-right">Cumulative (Projected)</TableHead>
-            <TableHead className="text-right">Cumulative (Actual)</TableHead>
+            <TableHead>{t("finances.table.month")}</TableHead>
+            <TableHead className="text-right">{t("finances.table.salaryProjected")}</TableHead>
+            <TableHead className="text-right">{t("finances.table.salaryActual")}</TableHead>
+            <TableHead className="text-right">{t("finances.table.sideProjected")}</TableHead>
+            <TableHead className="text-right">{t("finances.table.sideActual")}</TableHead>
+            <TableHead className="text-right">{t("finances.table.cumProjected")}</TableHead>
+            <TableHead className="text-right">{t("finances.table.cumActual")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -85,7 +87,7 @@ export function SavingsTable({ savings, onUpdate }: SavingsTableProps) {
                       {entry.actualSalary ? (
                         <Money amount={entry.actualSalary} from="JPY" />
                       ) : (
-                        "Click to edit"
+                        t("finances.table.clickEdit")
                       )}
                     </span>
                   )}
@@ -112,7 +114,7 @@ export function SavingsTable({ savings, onUpdate }: SavingsTableProps) {
                       {entry.actualSideIncome ? (
                         <Money amount={entry.actualSideIncome} from="JPY" />
                       ) : (
-                        "Click to edit"
+                        t("finances.table.clickEdit")
                       )}
                     </span>
                   )}

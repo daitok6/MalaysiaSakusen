@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { VisaTimeline } from "@/components/visa-timeline";
 import { DocumentChecklist } from "@/components/document-checklist";
 import { Card, CardContent } from "@/components/ui/card";
+import { useLocale } from "@/components/locale-provider";
 import type { VisaStep, VisaStepStatus, TrackerDocument, DocumentStatus } from "@/lib/types";
 
 const APPLICATION_DATE = new Date("2026-08-15");
@@ -14,6 +15,7 @@ export default function VisaPage() {
   const [loading, setLoading] = useState(true);
   const [daysUntilApp, setDaysUntilApp] = useState<number | null>(null);
   const notesTimeout = useRef<Record<string, NodeJS.Timeout>>({});
+  const { t } = useLocale();
 
   useEffect(() => {
     fetch("/api/visa")
@@ -79,7 +81,7 @@ export default function VisaPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <p className="text-muted-foreground">Loading visa tracker...</p>
+        <p className="text-muted-foreground">{t("visa.loading")}</p>
       </div>
     );
   }
@@ -87,9 +89,9 @@ export default function VisaPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-navy">Visa Tracker</h1>
+        <h1 className="text-2xl font-bold text-navy">{t("visa.title")}</h1>
         <p className="text-muted-foreground text-sm mt-1">
-          DE Rantau Digital Nomad Pass progress
+          {t("visa.subtitle")}
         </p>
       </div>
 
@@ -97,9 +99,9 @@ export default function VisaPage() {
         <Card className="bg-gradient-to-r from-navy/5 to-primary/5 border-navy/20">
           <CardContent className="pt-6 flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">Days until application target</p>
+              <p className="text-sm text-muted-foreground">{t("visa.countdown.label")}</p>
               <p className="text-3xl font-bold text-navy">{daysUntilApp}</p>
-              <p className="text-xs text-muted-foreground mt-1">Target: August 15, 2026</p>
+              <p className="text-xs text-muted-foreground mt-1">{t("visa.countdown.target")}</p>
             </div>
             <span className="text-4xl">📄</span>
           </CardContent>
