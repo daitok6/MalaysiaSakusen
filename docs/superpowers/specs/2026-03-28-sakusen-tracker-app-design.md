@@ -39,19 +39,19 @@ A lightweight, design-heavy Next.js web app to track progress on the Malaysia re
 
 | Token | Hex | Usage |
 |-------|-----|-------|
-| Primary (red) | #D4423B | Buttons, active states, progress fills |
-| Accent (gold) | #F5C518 | Highlights, badges, celebrations |
-| Navy | #1A237E | Header/nav, headings, dark text |
-| Background | #FFF8F0 | Page background, warm cream |
-| Text | #1A1A3E | Body text, warm dark navy |
-| Success | #2E7D6F | Completed states, done badges |
-| Card base | #FFFFFF | Card backgrounds with warm shadow |
+| Primary (dusty rose-red) | #C4706E | Buttons, active states, progress fills |
+| Accent (muted gold) | #E8C97A | Highlights, badges, celebrations |
+| Navy (slate) | #2D3A5C | Header/nav, headings, dark text |
+| Background | #FAF6F1 | Page background, soft warm cream |
+| Text | #3D3D50 | Body text, soft dark |
+| Success (sage) | #6B9E8A | Completed states, done badges |
+| Card base | #FFFDF9 | Card backgrounds, warm off-white |
 
 ### Typography
 
 - **Font:** Plus Jakarta Sans (Google Fonts) — rounded, friendly, approachable
-- **Headings:** Bold, navy (#1A237E)
-- **Body:** Regular, warm dark (#1A1A3E)
+- **Headings:** Bold, slate navy (#2D3A5C)
+- **Body:** Regular, soft dark (#3D3D50)
 
 ### Design Elements
 
