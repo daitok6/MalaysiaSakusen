@@ -23,6 +23,16 @@
 
 ---
 
+### Deep-Dive Modules
+
+> These modules expand on the plan with detailed financials, procedures, and setup guides.
+
+- [Module 1: Revised Financial Model](docs/modules/01-revised-financial-model.md) — Conservative savings projections, all exit/setup costs, checkpoint gate, delay strategy
+- [Module 2: Japan Exit Procedures](docs/modules/02-japan-exit-procedures.md) — Complete resignation, tax, insurance, and administrative playbook
+- [Module 3: Malaysia Setup & Tax](docs/modules/03-malaysia-setup-and-tax.md) — First-month KL playbook, tax obligations, business entity strategy
+
+---
+
 ## 1. Malaysia Relocation Strategy
 
 ### The Visa: DE Rantau Digital Nomad Pass
@@ -95,18 +105,28 @@
 
 ### Savings Target
 
+> **See [Module 1: Revised Financial Model](docs/modules/01-revised-financial-model.md) for full details** including exit costs, KL setup costs, and delay scenarios.
+
 | Month | Save from salary | Side income | Cumulative savings |
 |-------|-----------------|-------------|-------------------|
-| Apr | ¥100,000 | ¥0 | ¥100,000 |
-| May | ¥100,000 | ¥30,000 | ¥230,000 |
-| Jun | ¥100,000 | ¥60,000 | ¥390,000 |
-| Jul | ¥100,000 | ¥100,000 | ¥590,000 |
-| Aug | ¥100,000 | ¥150,000 | ¥840,000 |
-| Sep | ¥100,000 | ¥180,000 | ¥1,120,000 |
-| Oct | ¥100,000 | ¥200,000 | ¥1,420,000 |
-| **Total** | | | **¥1,420,000 (~$9,500 USD)** |
+| Apr | ¥60,000 | ¥0 | ¥60,000 |
+| May | ¥60,000 | ¥15,000 | ¥135,000 |
+| Jun | ¥60,000 | ¥30,000 | ¥225,000 |
+| Jul | ¥60,000 | ¥60,000 | ¥345,000 |
+| Aug | ¥60,000 | ¥90,000 | ¥495,000 |
+| Sep | ¥60,000 | ¥120,000 | ¥675,000 |
+| Oct | ¥60,000 | ¥150,000 | ¥885,000 |
+| **Total** | | | **¥885,000 (~$5,900 USD)** |
 
-This gives you ~2.5 months of expenses in Malaysia at $3,500/mo spend.
+Side income uses conservative estimates. ¥885,000 must cover exit costs (¥244K–688K) + KL setup (¥340K–545K). December 2026 is the realistic move target — see Module 1 for full analysis.
+
+#### August Checkpoint Gate
+
+| Metric | Minimum | If not met |
+|--------|---------|------------|
+| Savings | ¥400,000+ | Delay to December |
+| Side income | ¥80,000+/mo | Delay to December |
+| 納税管理人 | Identified | Must arrange before departure |
 
 ### Risks & Mitigation
 
@@ -117,6 +137,16 @@ This gives you ~2.5 months of expenses in Malaysia at $3,500/mo spend.
 | Marriage delayed | DE Rantau allows individual applications; partner applies separately |
 | Yen weakens further | Keep earnings in USD via Wise; convert only what you need |
 | Apartment scam | Use iProperty.com.my, PropertyGuru; view via video call; first month Airbnb |
+| 住民税 lump-sum liability | Arrange 納税管理人 before departure, pay in installments from KL |
+| 副業 policy violation discovered | Check 就業規則 before starting any side work; keep side work discreet |
+| KL apartment deposit larger than expected | Budget MYR 10,500+ (3.5x rent); negotiate 1+1 deposit for shorter terms |
+| Partner income ramp slower than projected | Partner focuses on move logistics (high-ROI unpaid work); reduce partner income assumptions |
+
+### Japan Exit Procedures
+
+> **See [Module 2: Japan Exit Procedures](docs/modules/02-japan-exit-procedures.md) for the complete playbook.**
+
+Both partners must cleanly exit: resign (退職届), arrange a tax representative (納税管理人), submit moving-out notice (転出届), bridge health insurance, and file a final tax return. Critical timing: depart before January 1, 2027 to avoid 住民税 on 2027 income.
 
 ---
 
@@ -257,22 +287,22 @@ Revenue path:
 
 ---
 
-### Combined Income Projection
+### Combined Income Projection (Conservative)
 
 | Month | Layer 1 | Layer 2 | Layer 3 | Total |
 |-------|---------|---------|---------|-------|
-| Apr 2026 | $500 | $0 | $0 | $500 |
-| May | $1,200 | $300 | $0 | $1,500 |
-| Jun | $1,500 | $800 | $0 | $2,300 |
-| Jul | $1,800 | $1,200 | $0 | $3,000 |
-| Aug | $2,000 | $1,500 | $200 | $3,700 |
-| Sep | $2,000 | $1,800 | $500 | $4,300 |
-| Oct | $2,000 | $2,000 | $800 | $4,800 |
-| Nov (in MY) | $2,000 | $2,000 | $1,200 | $5,200 |
-| Feb 2027 | $1,500 | $2,500 | $3,000 | $7,000 |
-| May 2027 | $1,000 | $2,500 | $5,000 | $8,500 |
+| Apr 2026 | $0 | $0 | $0 | $0 |
+| May | $70 | $30 | $0 | $100 |
+| Jun | $130 | $70 | $0 | $200 |
+| Jul | $270 | $130 | $0 | $400 |
+| Aug | $400 | $200 | $0 | $600 |
+| Sep | $530 | $270 | $0 | $800 |
+| Oct | $670 | $330 | $0 | $1,000 |
+| Nov (in MY) | $800 | $500 | $200 | $1,500 |
+| Feb 2027 | $600 | $1,200 | $800 | $2,600 |
+| May 2027 | $400 | $1,800 | $2,000 | $4,200 |
 
-*Layer 1 decreases as Layer 3 scales — deliberate transition.*
+*Conservative estimates reflecting platform ramp-up realities. See Module 1 for assumptions.*
 
 ---
 
@@ -308,10 +338,12 @@ Revenue path:
 
 ### Backup Plans
 
-1. **If savings < ¥800,000 by September**: Delay move to January 2027 (3 months)
-2. **If visa rejected**: Enter Malaysia visa-free (90 days), reapply from KL
-3. **If income drops below $2,500/mo in MY**: Activate emergency freelancing (take any project), reduce expenses to $1,500/mo (very doable in KL)
-4. **Nuclear option**: Return to Japan, resume employment, try again in 6 months
+1. **If savings < ¥400,000 by August**: Delay move to December 2026 (still before Jan 1)
+2. **If December still not viable**: Delay to January 2027, leave by Jan 31 (small 住民税 hit of ~¥30,000)
+3. **If visa rejected**: Enter Malaysia visa-free (90 days for JP passport), reapply from KL
+4. **If income drops below $1,500/mo in MY**: Activate emergency freelancing, reduce expenses to $1,500/mo
+5. **年金 lump-sum withdrawal**: Emergency option — claim up to ¥600K–1.2M combined. 2-year window. Trade-off: erases pension years.
+6. **Nuclear option**: Return to Japan, resume employment, try again in 6 months
 
 ---
 
@@ -639,6 +671,18 @@ Example prompts:
 | V8 | Prepare CV/portfolio for both | Medium | Jul 31, 2026 | — | Todo |
 | V9 | Submit DE Rantau application | Critical | Aug 15, 2026 | V3,V5,V6,V7,V8 | Todo |
 | V10 | Receive visa approval | Critical | Sep 15, 2026 | V9 | Todo |
+| V11 | Check 就業規則 for resignation notice period (both) | High | Aug 15, 2026 | — | Todo |
+| V12 | Identify 納税管理人 (family or 税理士) | High | Sep 15, 2026 | — | Todo |
+| V13 | Submit 納税管理人届出書 (tax office + city hall) | Critical | Oct 15, 2026 | V12 | Todo |
+| V14 | Submit 退職届 (both) | Critical | Per notice period | V10,V11 | Todo |
+| V15 | Request 退職証明書 + 源泉徴収票 from employers | High | Last working day | V14 | Todo |
+| V16 | Use remaining 有給休暇 (both) | High | Last working day | V14 | Todo |
+| V17 | Submit 転出届 at city hall | Critical | 14 days before departure | V14 | Todo |
+| V18 | Cancel utilities, NHK, internet | Medium | 1 week before departure | — | Todo |
+| V19 | Set up mail forwarding (転送届) | Medium | 1 week before departure | — | Todo |
+| V20 | Switch mobile to povo2.0 | Low | Before departure | — | Todo |
+| V21 | Keep JP bank account + set up online banking | High | Before departure | — | Todo |
+| V22 | File 確定申告 for 2026 via 納税管理人 | Critical | Mar 15, 2027 | V13 | Todo |
 
 ### Income
 
@@ -646,7 +690,7 @@ Example prompts:
 |---|------|----------|----------|------------|--------|
 | I1 | Complete DataAnnotation onboarding | Critical | Apr 7, 2026 | — | In Progress |
 | I2 | Complete Outlier onboarding | Critical | Apr 7, 2026 | — | In Progress |
-| I3 | Apply to Appen, Telus, Scale AI (backup) | High | Apr 15, 2026 | — | Todo |
+| I3 | Apply to Appen, Telus, Scale AI (backup) | High | Apr 1, 2026 | — | Todo |
 | I4 | Set up Wise account (USD receiving) | Critical | Apr 10, 2026 | — | Todo |
 | I5 | Create Upwork profile | High | May 1, 2026 | — | Todo |
 | I6 | Apply to Toptal | Medium | May 15, 2026 | — | Todo |
@@ -668,6 +712,10 @@ Example prompts:
 | B6 | Partner: Start content creation (blog/social) | Medium | May 15, 2026 | I9 | Todo |
 | B7 | Launch newsletter | Medium | Jul 1, 2026 | B6 | Todo |
 | B8 | First 10 paying SaaS customers | High | Oct 31, 2026 | B3 | Todo |
+| B9 | Verify 副業 policy at both employers | Critical | Before starting any side work | — | Todo |
+| B10 | SaaS validation gate: 5 interested users + 2 beta testers | High | Jun 15, 2026 | B1 | Todo |
+| B11 | Partner: build portfolio of 3-5 writing samples | Medium | Jun 30, 2026 | — | Todo |
+| B12 | Decide on business entity when SaaS > $2K/mo | Medium | When applicable | — | Todo |
 
 ### Life & Logistics
 
@@ -681,6 +729,11 @@ Example prompts:
 | L6 | Cancel Japanese utilities & subscriptions | Medium | Oct 25, 2026 | L4 | Todo |
 | L7 | Book flights Tokyo → KL | High | Oct 10, 2026 | V10 | Todo |
 | L8 | Reach ¥1,200,000+ savings | Critical | Oct 31, 2026 | L1 | Todo |
+| L9 | Download Grab + Touch 'n Go apps | Low | Nov W1, 2026 | — | Todo |
+| L10 | Get SIM card at KLIA on arrival | High | Arrival day | — | Todo |
+| L11 | Open Malaysian bank account | High | Nov W3, 2026 | L10 | Todo |
+| L12 | Budget MYR 10,500+ for apartment deposit | Critical | Before lease signing | — | Todo |
+| L13 | Consult Malaysian tax advisor | High | Dec 2027 | — | Todo |
 
 ### Tech (Web App)
 
