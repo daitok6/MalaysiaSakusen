@@ -6,6 +6,13 @@ import { useCurrency } from "./currency-provider";
 import { useLocale } from "./locale-provider";
 import type { Currency } from "@/lib/types";
 import {
+  LayoutDashboard,
+  ClipboardList,
+  Wallet,
+  FileCheck,
+  BarChart3,
+} from "lucide-react";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -13,11 +20,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const navKeys = [
-  { href: "/", key: "nav.dashboard", icon: "🏠" },
-  { href: "/checklist", key: "nav.checklist", icon: "✅" },
-  { href: "/finances", key: "nav.finances", icon: "💰" },
-  { href: "/visa", key: "nav.visa", icon: "📄" },
+const navItems = [
+  { href: "/", key: "nav.dashboard", Icon: LayoutDashboard },
+  { href: "/summary", key: "nav.summary", Icon: BarChart3 },
+  { href: "/checklist", key: "nav.checklist", Icon: ClipboardList },
+  { href: "/finances", key: "nav.finances", Icon: Wallet },
+  { href: "/visa", key: "nav.visa", Icon: FileCheck },
 ];
 
 const currencyOptions: { value: Currency; label: string }[] = [
@@ -36,39 +44,44 @@ export function Nav({ userName }: NavProps) {
   const { locale, setLocale, t } = useLocale();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-navy text-white">
-      <div className="container mx-auto flex h-14 items-center justify-between px-4">
-        <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-2 font-bold text-lg">
-            <span className="text-gold">☆</span>
-            <span>Sakusen</span>
+    <header className="sticky top-0 z-50 border-b border-white/15 bg-white/50 backdrop-blur-xl">
+      <div className="container mx-auto flex h-16 items-center justify-between px-6 max-w-6xl">
+        <div className="flex items-center gap-8">
+          <Link href="/" className="flex items-center gap-2.5">
+            <span className="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-lavender text-lavender-foreground text-sm font-bold">
+              作
+            </span>
+            <span className="font-bold text-lg tracking-tight hidden sm:inline">sakusen</span>
           </Link>
           <nav className="hidden md:flex items-center gap-1">
-            {navKeys.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-                  pathname === item.href
-                    ? "bg-white/15 text-gold"
-                    : "text-white/70 hover:text-white hover:bg-white/10"
-                }`}
-              >
-                <span className="mr-1.5">{item.icon}</span>
-                {t(item.key)}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const active = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-200 cursor-pointer ${
+                    active
+                      ? "bg-lavender/20 text-foreground"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                  }`}
+                >
+                  <item.Icon size={16} strokeWidth={active ? 2.2 : 1.8} />
+                  {t(item.key)}
+                </Link>
+              );
+            })}
           </nav>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <button
             onClick={() => setLocale(locale === "en" ? "ja" : "en")}
-            className="h-8 px-2 rounded-md bg-white/10 text-white text-sm font-medium hover:bg-white/20 transition-colors"
+            className="h-8 px-3 rounded-xl bg-muted text-foreground text-xs font-medium hover:bg-lavender/20 transition-all duration-200 cursor-pointer"
           >
             {locale === "en" ? "JA" : "EN"}
           </button>
           <Select value={currency} onValueChange={(v) => setCurrency(v as Currency)}>
-            <SelectTrigger className="w-[80px] sm:w-[100px] h-8 bg-white/10 border-white/20 text-white text-sm">
+            <SelectTrigger className="w-[88px] h-8 bg-muted border-0 text-foreground text-xs rounded-xl cursor-pointer">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -80,29 +93,12 @@ export function Nav({ userName }: NavProps) {
             </SelectContent>
           </Select>
           {userName && (
-            <div className="h-8 px-3 rounded-full bg-gold/20 text-gold text-sm font-medium hidden sm:flex items-center">
+            <div className="h-8 px-3.5 rounded-xl bg-coral/30 text-coral-foreground text-xs font-medium hidden sm:flex items-center">
               {userName}
             </div>
           )}
         </div>
       </div>
-      {/* Mobile nav */}
-      <nav className="md:hidden flex border-t border-white/10">
-        {navKeys.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={`flex-1 text-center py-2 text-xs font-medium transition-colors ${
-              pathname === item.href
-                ? "text-gold bg-white/10"
-                : "text-white/60"
-            }`}
-          >
-            <div className="text-lg">{item.icon}</div>
-            {t(item.key)}
-          </Link>
-        ))}
-      </nav>
     </header>
   );
 }

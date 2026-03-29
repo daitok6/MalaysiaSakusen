@@ -1,28 +1,32 @@
-import { Card, CardContent } from "@/components/ui/card";
+"use client";
+
+import { TiltCard } from "./tilt-card";
+import type { LucideIcon } from "lucide-react";
 
 type StatCardProps = {
-  icon: string;
+  Icon: LucideIcon;
   label: string;
   value: string | React.ReactNode;
   subtitle?: string;
+  color?: string;
   className?: string;
 };
 
-export function StatCard({ icon, label, value, subtitle, className = "" }: StatCardProps) {
+export function StatCard({ Icon, label, value, subtitle, color = "lavender", className = "" }: StatCardProps) {
   return (
-    <Card className={`${className}`}>
-      <CardContent className="pt-6">
-        <div className="flex items-start justify-between">
-          <div>
-            <p className="text-sm text-muted-foreground">{label}</p>
-            <p className="text-2xl font-bold text-navy mt-1">{value}</p>
-            {subtitle && (
-              <p className="text-xs text-muted-foreground mt-1">{subtitle}</p>
-            )}
-          </div>
-          <span className="text-2xl">{icon}</span>
+    <TiltCard className={className}>
+      <div className="flex items-start justify-between">
+        <div>
+          <p className="text-xs text-muted-foreground font-medium">{label}</p>
+          <p className="text-2xl font-bold tracking-tight mt-1.5">{value}</p>
+          {subtitle && (
+            <p className="text-xs text-muted-foreground mt-1">{subtitle}</p>
+          )}
         </div>
-      </CardContent>
-    </Card>
+        <div className={`w-10 h-10 rounded-xl bg-${color}/20 flex items-center justify-center`}>
+          <Icon size={20} className={`text-${color}-foreground`} />
+        </div>
+      </div>
+    </TiltCard>
   );
 }

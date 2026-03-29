@@ -5,73 +5,320 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --color-background: #FAF6F1;
-  --color-foreground: #3D3D50;
-  --color-card: #FFFDF9;
-  --color-card-foreground: #3D3D50;
-  --color-popover: #FFFDF9;
-  --color-popover-foreground: #3D3D50;
-  --color-primary: #C4706E;
-  --color-primary-foreground: #FFFDF9;
-  --color-secondary: #F0EBE4;
-  --color-secondary-foreground: #2D3A5C;
-  --color-muted: #F0EBE4;
-  --color-muted-foreground: #7A7A8E;
-  --color-accent: #E8C97A;
-  --color-accent-foreground: #2D3A5C;
-  --color-destructive: #C4706E;
-  --color-destructive-foreground: #FFFDF9;
-  --color-border: #E8E0D6;
-  --color-input: #E8E0D6;
-  --color-ring: #C4706E;
-  --color-success: #6B9E8A;
-  --color-success-foreground: #FFFDF9;
-  --color-navy: #2D3A5C;
-  --color-gold: #E8C97A;
-  --radius: 0.75rem;
+  /* ── Pastel Palette ─────────────────────────────────── */
+  --color-background: #FBF8F4;
+  --color-foreground: #2D2B3D;
+  --color-card: #FFFFFF;
+  --color-card-foreground: #2D2B3D;
+  --color-popover: #FFFFFF;
+  --color-popover-foreground: #2D2B3D;
 
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --color-primary: #8B85C1;
+  --color-primary-foreground: #FFFFFF;
+  --color-secondary: #F3F0FF;
+  --color-secondary-foreground: #2D2B3D;
 
-  --color-sidebar: #FFFDF9;
-  --color-sidebar-foreground: #3D3D50;
-  --color-sidebar-primary: #C4706E;
-  --color-sidebar-primary-foreground: #FFFDF9;
-  --color-sidebar-accent: #F0EBE4;
-  --color-sidebar-accent-foreground: #2D3A5C;
-  --color-sidebar-border: #E8E0D6;
-  --color-sidebar-ring: #C4706E;
+  --color-muted: #F0EDE8;
+  --color-muted-foreground: #8A8698;
+  --color-accent: #B8B5FF;
+  --color-accent-foreground: #2D2B3D;
 
-  --color-chart-1: #C4706E;
-  --color-chart-2: #6B9E8A;
-  --color-chart-3: #E8C97A;
-  --color-chart-4: #2D3A5C;
-  --color-chart-5: #7A7A8E;
+  --color-destructive: #E57373;
+  --color-destructive-foreground: #FFFFFF;
+  --color-border: #E8E4DF;
+  --color-input: #E8E4DF;
+  --color-ring: #B8B5FF;
 
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
+  /* ── Semantic pastels ───────────────────────────────── */
+  --color-success: #A7E8BD;
+  --color-success-foreground: #1B5E3A;
+  --color-coral: #FFB5A7;
+  --color-coral-foreground: #7D2E22;
+  --color-mint: #A7E8BD;
+  --color-mint-foreground: #1B5E3A;
+  --color-lavender: #B8B5FF;
+  --color-lavender-foreground: #3D3980;
+  --color-marigold: #FFD6A5;
+  --color-marigold-foreground: #7D5A1E;
+  --color-sky: #A5D8FF;
+  --color-sky-foreground: #1B4D7D;
+  --color-blush: #FFD1DC;
+  --color-blush-foreground: #7D2E42;
+
+  /* ── Deep accent ────────────────────────────────────── */
+  --color-deep-purple: #6C63FF;
+  --color-deep-purple-foreground: #FFFFFF;
+
+  /* ── Layout tokens ──────────────────────────────────── */
+  --radius: 1rem;
+  --font-sans: "M PLUS Rounded 1c", "Nunito Sans", ui-sans-serif, system-ui, sans-serif;
+
+  /* ── Sidebar (shadcn) ───────────────────────────────── */
+  --color-sidebar: #FFFFFF;
+  --color-sidebar-foreground: #2D2B3D;
+  --color-sidebar-primary: #8B85C1;
+  --color-sidebar-primary-foreground: #FFFFFF;
+  --color-sidebar-accent: #F3F0FF;
+  --color-sidebar-accent-foreground: #2D2B3D;
+  --color-sidebar-border: #E8E4DF;
+  --color-sidebar-ring: #B8B5FF;
+
+  /* ── Charts ─────────────────────────────────────────── */
+  --color-chart-1: #8B85C1;
+  --color-chart-2: #A7E8BD;
+  --color-chart-3: #FFB5A7;
+  --color-chart-4: #FFD6A5;
+  --color-chart-5: #A5D8FF;
+
+  /* ── Radius scale ───────────────────────────────────── */
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --radius-xl: calc(var(--radius) * 1.25);
+  --radius-2xl: calc(var(--radius) * 1.5);
+  --radius-3xl: calc(var(--radius) * 2);
+  --radius-4xl: calc(var(--radius) * 2.5);
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply text-foreground font-sans;
+    font-feature-settings: "palt";
+    line-height: 1.8;
+    background: radial-gradient(ellipse at 20% 0%, rgba(184, 181, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 100%, rgba(167, 232, 189, 0.06) 0%, transparent 50%),
+                #FBF8F4;
+    min-height: 100vh;
+  }
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   }
   * {
     @apply border-border outline-ring/50;
   }
 }
 
-/* Striped progress bar - Malaysian flag motif */
+/* ── Progress bar fill ────────────────────────────────── */
 .progress-striped .progress-fill {
-  background: repeating-linear-gradient(
-    90deg,
-    #C4706E 0px,
-    #C4706E 8px,
-    #FFFDF9 8px,
-    #FFFDF9 16px
-  );
+  background: linear-gradient(90deg, var(--color-deep-purple), var(--color-lavender), var(--color-mint));
+}
+
+/* ── Soft card hover ──────────────────────────────────── */
+.card-hover {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.25s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(139, 133, 193, 0.14);
+}
+
+/* ── Fade-in-up animation ─────────────────────────────── */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: fadeInUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Stagger children ─────────────────────────────────── */
+.stagger > * {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: fadeInUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.stagger > *:nth-child(1) { animation-delay: 0.04s; }
+.stagger > *:nth-child(2) { animation-delay: 0.08s; }
+.stagger > *:nth-child(3) { animation-delay: 0.12s; }
+.stagger > *:nth-child(4) { animation-delay: 0.16s; }
+.stagger > *:nth-child(5) { animation-delay: 0.20s; }
+.stagger > *:nth-child(6) { animation-delay: 0.24s; }
+.stagger > *:nth-child(7) { animation-delay: 0.28s; }
+.stagger > *:nth-child(8) { animation-delay: 0.32s; }
+
+/* ── Pastel tag pills ─────────────────────────────────── */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+}
+.pill-lavender  { background: var(--color-lavender);  color: var(--color-lavender-foreground); }
+.pill-coral     { background: var(--color-coral);     color: var(--color-coral-foreground); }
+.pill-mint      { background: var(--color-mint);      color: var(--color-mint-foreground); }
+.pill-marigold  { background: var(--color-marigold);  color: var(--color-marigold-foreground); }
+.pill-sky       { background: var(--color-sky);       color: var(--color-sky-foreground); }
+.pill-blush     { background: var(--color-blush);     color: var(--color-blush-foreground); }
+.pill-muted     { background: var(--color-muted);     color: var(--color-muted-foreground); }
+
+/* ── Bento card base ──────────────────────────────────── */
+.bento {
+  border-radius: 1.25rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-card);
+  padding: 1.5rem;
+}
+
+/* ── Glassmorphic card ───────────────────────────────── */
+.glass {
+  border-radius: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(139, 133, 193, 0.08);
+}
+
+.glass-strong {
+  border-radius: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(139, 133, 193, 0.12);
+}
+
+/* ── 3D tilt card ────────────────────────────────────── */
+.tilt-card {
+  transform-style: preserve-3d;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.3s ease;
+}
+.tilt-card:hover {
+  box-shadow: 0 20px 60px rgba(139, 133, 193, 0.15);
+}
+
+/* ── Parallax hero ───────────────────────────────────── */
+.parallax-hero {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.parallax-hero .hero-bg {
+  position: absolute;
+  inset: -10%;
+  z-index: 0;
+}
+
+.parallax-hero .hero-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+}
+
+/* ── Gradient text ───────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, var(--color-deep-purple), var(--color-lavender), var(--color-mint));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Floating animation ──────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* ── Sparkle particles ───────────────────────────────── */
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1) rotate(180deg); }
+}
+.sparkle::before,
+.sparkle::after {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-marigold);
+}
+.sparkle::before {
+  top: 10%;
+  left: 20%;
+  animation: sparkle 2s ease-in-out infinite;
+}
+.sparkle::after {
+  bottom: 20%;
+  right: 15%;
+  animation: sparkle 2.5s ease-in-out 0.5s infinite;
+}
+
+/* ── Glow border (for urgent items) ──────────────────── */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 8px rgba(255, 181, 167, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(255, 181, 167, 0.6); }
+}
+.glow-coral {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* ── Slide-in from left ──────────────────────────────── */
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.slide-in-left {
+  animation: slideInLeft 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ── Bounce-in for pills ─────────────────────────────── */
+@keyframes bounceIn {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.15); }
+  100% { transform: scale(1); opacity: 1; }
+}
+.bounce-in {
+  animation: bounceIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ── Reduced motion ───────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .fade-in-up,
+  .stagger > *,
+  .card-hover,
+  .animate-float,
+  .sparkle::before,
+  .sparkle::after,
+  .glow-coral,
+  .slide-in-left,
+  .bounce-in,
+  .tilt-card {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }

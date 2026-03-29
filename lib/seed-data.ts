@@ -33,8 +33,8 @@ export const seedTasks: Task[] = [
   { id: "I5",  title: "Create Upwork profile",                             category: "income", priority: "high",     status: "todo",        deadline: "2026-05-01" },
   { id: "I6",  title: "Apply to Toptal",                                   category: "income", priority: "medium",   status: "todo",        deadline: "2026-05-15" },
   { id: "I7",  title: "Complete first freelance project",                  category: "income", priority: "high",     status: "todo",        deadline: "2026-06-15", dependsOn: ["I5"] },
-  { id: "I8",  title: "Partner: Set up CrowdWorks profile",                category: "income", priority: "medium",   status: "todo",        deadline: "2026-04-15" },
-  { id: "I9",  title: "Partner: Complete HubSpot Marketing course",        category: "income", priority: "medium",   status: "todo",        deadline: "2026-05-31" },
+  { id: "I8",  title: "Koume: Set up CrowdWorks profile",                   category: "income", priority: "medium",   status: "todo",        deadline: "2026-04-15" },
+  { id: "I9",  title: "Koume: Complete HubSpot Marketing course",          category: "income", priority: "medium",   status: "todo",        deadline: "2026-05-31" },
   { id: "I10", title: "Reach $1,500/mo side income",                       category: "income", priority: "critical", status: "todo",        deadline: "2026-07-31", dependsOn: ["I1","I5"] },
   { id: "I11", title: "Reach $2,500/mo side income",                       category: "income", priority: "high",     status: "todo",        deadline: "2026-09-30", dependsOn: ["I10"] },
 
@@ -44,12 +44,12 @@ export const seedTasks: Task[] = [
   { id: "B3",  title: "Launch on Product Hunt",                             category: "business", priority: "medium", status: "todo", deadline: "2026-08-15", dependsOn: ["B2"] },
   { id: "B4",  title: "Create first digital product (template)",            category: "business", priority: "medium", status: "todo", deadline: "2026-06-30" },
   { id: "B5",  title: "Set up Gumroad store",                               category: "business", priority: "medium", status: "todo", deadline: "2026-06-15" },
-  { id: "B6",  title: "Partner: Start content creation (blog/social)",      category: "business", priority: "medium", status: "todo", deadline: "2026-05-15", dependsOn: ["I9"] },
+  { id: "B6",  title: "Koume: Start content creation (blog/social)",        category: "business", priority: "medium", status: "todo", deadline: "2026-05-15", dependsOn: ["I9"] },
   { id: "B7",  title: "Launch newsletter",                                  category: "business", priority: "medium", status: "todo", deadline: "2026-07-01", dependsOn: ["B6"] },
   { id: "B8",  title: "First 10 paying SaaS customers",                     category: "business", priority: "high",   status: "todo", deadline: "2026-10-31", dependsOn: ["B3"] },
   { id: "B9",  title: "Verify side-work policy at both employers",          category: "business", priority: "critical",status: "todo" },
   { id: "B10", title: "SaaS validation: 5 interested users + 2 beta testers",category: "business",priority: "high",   status: "todo", deadline: "2026-06-15", dependsOn: ["B1"] },
-  { id: "B11", title: "Partner: build portfolio of 3-5 writing samples",   category: "business", priority: "medium", status: "todo", deadline: "2026-06-30" },
+  { id: "B11", title: "Koume: build portfolio of 3-5 writing samples",     category: "business", priority: "medium", status: "todo", deadline: "2026-06-30" },
   { id: "B12", title: "Decide on business entity when SaaS > $2K/mo",      category: "business", priority: "medium", status: "todo" },
 
   // ── LIFE & LOGISTICS ──────────────────────────────────────────────────────
@@ -135,6 +135,6 @@ export const seedDocuments: TrackerDocument[] = [
 ];
 
 export const seedSettings: Settings = {
-  userNames: ["Daito", "Partner"],
+  userNames: ["Daito", "Koume"],
   preferredCurrency: "JPY",
 };

@@ -1,16 +1,23 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Nunito_Sans, M_PLUS_Rounded_1c } from "next/font/google";
 import "./globals.css";
 import { AppShell } from "@/components/app-shell";
 
-const plusJakarta = Plus_Jakarta_Sans({
+const nunitoSans = Nunito_Sans({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-latin",
+  weight: ["300", "400", "500", "600", "700"],
+});
+
+const mplusRounded = M_PLUS_Rounded_1c({
+  subsets: ["latin"],
+  variable: "--font-jp",
+  weight: ["300", "400", "500", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "Sakusen - Malaysia Relocation Tracker",
-  description: "Track your journey from Tokyo to Kuala Lumpur",
+  title: "Sakusen — マレーシア移住トラッカー",
+  description: "だいと＆こうめ — 東京からクアラルンプールへ",
 };
 
 export default function RootLayout({
@@ -19,8 +26,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${plusJakarta.variable} font-sans antialiased`}>
+    <html lang="ja">
+      <body className={`${nunitoSans.variable} ${mplusRounded.variable} font-sans antialiased`}>
         <AppShell>{children}</AppShell>
       </body>
     </html>

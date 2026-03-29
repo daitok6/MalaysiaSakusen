@@ -4,11 +4,12 @@ import { useState, useEffect } from "react";
 import { CurrencyProvider } from "./currency-provider";
 import { LocaleProvider } from "./locale-provider";
 import { Nav } from "./nav";
+import { FloatingNav } from "./floating-nav";
 import { UserPickerModal, useCurrentUser } from "./user-picker-modal";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const { user, selectUser } = useCurrentUser();
-  const [userNames, setUserNames] = useState<string[]>(["Daito", "Partner"]);
+  const [userNames, setUserNames] = useState<string[]>(["Daito", "Koume"]);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -37,7 +38,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           onSelect={selectUser}
           open={!user}
         />
-        <main className="container mx-auto px-4 py-6">{children}</main>
+        <main className="container mx-auto px-6 py-10 max-w-6xl">{children}</main>
+        <FloatingNav />
       </CurrencyProvider>
     </LocaleProvider>
   );

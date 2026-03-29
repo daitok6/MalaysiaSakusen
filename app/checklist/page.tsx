@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
+import { ParallaxHero } from "@/components/parallax-hero";
 import { TaskCard } from "@/components/task-card";
 import { ProgressBar } from "@/components/progress-bar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -12,14 +13,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useLocale } from "@/components/locale-provider";
+import { FileText, Coins, Rocket, Home, Monitor } from "lucide-react";
 import type { Task, TaskCategory, TaskStatus } from "@/lib/types";
+import type { LucideIcon } from "lucide-react";
 
-const categories: { value: TaskCategory; labelKey: string; icon: string }[] = [
-  { value: "visa", labelKey: "checklist.category.visa", icon: "📄" },
-  { value: "income", labelKey: "checklist.category.income", icon: "💰" },
-  { value: "business", labelKey: "checklist.category.business", icon: "🚀" },
-  { value: "life", labelKey: "checklist.category.life", icon: "🏠" },
-  { value: "tech", labelKey: "checklist.category.tech", icon: "💻" },
+const categories: { value: TaskCategory; labelKey: string; Icon: LucideIcon }[] = [
+  { value: "visa", labelKey: "checklist.category.visa", Icon: FileText },
+  { value: "income", labelKey: "checklist.category.income", Icon: Coins },
+  { value: "business", labelKey: "checklist.category.business", Icon: Rocket },
+  { value: "life", labelKey: "checklist.category.life", Icon: Home },
+  { value: "tech", labelKey: "checklist.category.tech", Icon: Monitor },
 ];
 
 export default function ChecklistPage() {
@@ -28,6 +31,7 @@ export default function ChecklistPage() {
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [filterAssignee, setFilterAssignee] = useState<string>("all");
   const [filterPriority, setFilterPriority] = useState<string>("all");
+  const [showFilters, setShowFilters] = useState(false);
   const { t } = useLocale();
 
   useEffect(() => {
@@ -75,24 +79,43 @@ export default function ChecklistPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <p className="text-muted-foreground">{t("checklist.loading")}</p>
+        <div className="w-12 h-12 rounded-full border-2 border-lavender border-t-transparent animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-navy">{t("checklist.title")}</h1>
-        <p className="text-muted-foreground text-sm mt-1">
-          {t("checklist.subtitle")}
-        </p>
+    <div className="space-y-8">
+      {/* Clipboard Hero */}
+      <div className="-mx-6 -mt-10">
+        <ParallaxHero
+          sceneUrl="/scenes/clipboard.splinecode"
+          fallbackSrc="/illustrations/clipboard.svg"
+          fallbackAlt="3D floating clipboard"
+        >
+          <div className="space-y-2 px-6">
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tighter gradient-text">
+              {t("checklist.title")}
+            </h1>
+            <p className="text-muted-foreground text-sm">{t("checklist.subtitle")}</p>
+          </div>
+        </ParallaxHero>
       </div>
 
-      {/* Filters */}
-      <div className="flex gap-3 flex-wrap">
+      {/* Filter toggle for mobile */}
+      <div className="md:hidden">
+        <button
+          onClick={() => setShowFilters(!showFilters)}
+          className="glass text-sm font-medium w-full text-center cursor-pointer"
+        >
+          {showFilters ? "Hide Filters" : "Show Filters"}
+        </button>
+      </div>
+
+      {/* Filters — collapsible on mobile */}
+      <div className={`flex gap-2 flex-wrap ${showFilters ? "" : "hidden md:flex"}`}>
         <Select value={filterStatus} onValueChange={(v) => setFilterStatus(v ?? "all")}>
-          <SelectTrigger className="w-[130px] h-8 text-sm">
+          <SelectTrigger className="w-[130px] h-9 text-xs rounded-xl border-white/20 bg-white/50 backdrop-blur-sm cursor-pointer">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
@@ -103,20 +126,18 @@ export default function ChecklistPage() {
           </SelectContent>
         </Select>
         <Select value={filterAssignee} onValueChange={(v) => setFilterAssignee(v ?? "all")}>
-          <SelectTrigger className="w-[130px] h-8 text-sm">
+          <SelectTrigger className="w-[130px] h-9 text-xs rounded-xl border-white/20 bg-white/50 backdrop-blur-sm cursor-pointer">
             <SelectValue placeholder="Assignee" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">{t("checklist.filter.everyone")}</SelectItem>
             {assignees.map((a) => (
-              <SelectItem key={a} value={a}>
-                {a}
-              </SelectItem>
+              <SelectItem key={a} value={a}>{a}</SelectItem>
             ))}
           </SelectContent>
         </Select>
         <Select value={filterPriority} onValueChange={(v) => setFilterPriority(v ?? "all")}>
-          <SelectTrigger className="w-[130px] h-8 text-sm">
+          <SelectTrigger className="w-[130px] h-9 text-xs rounded-xl border-white/20 bg-white/50 backdrop-blur-sm cursor-pointer">
             <SelectValue placeholder="Priority" />
           </SelectTrigger>
           <SelectContent>
@@ -129,19 +150,21 @@ export default function ChecklistPage() {
         </Select>
       </div>
 
-      {/* Category Tabs */}
+      {/* Floating pill tabs */}
       <Tabs defaultValue="visa">
-        <TabsList className="w-full justify-start overflow-x-auto">
+        <TabsList className="w-full justify-start overflow-x-auto bg-white/40 backdrop-blur-md border border-white/20 rounded-2xl gap-1 p-1.5">
           {categories.map((cat) => {
             const catTasks = tasks.filter((t) => t.category === cat.value);
             const done = catTasks.filter((t) => t.status === "done").length;
             return (
-              <TabsTrigger key={cat.value} value={cat.value} className="text-sm">
-                <span className="mr-1">{cat.icon}</span>
+              <TabsTrigger
+                key={cat.value}
+                value={cat.value}
+                className="text-xs rounded-xl data-[state=active]:bg-white/70 data-[state=active]:text-foreground data-[state=active]:shadow-sm px-4 py-2 gap-1.5 cursor-pointer transition-all"
+              >
+                <cat.Icon size={14} />
                 {t(cat.labelKey)}
-                <span className="ml-1.5 text-xs text-muted-foreground">
-                  {done}/{catTasks.length}
-                </span>
+                <span className="ml-1 font-bold tabular-nums opacity-60">{done}/{catTasks.length}</span>
               </TabsTrigger>
             );
           })}
@@ -154,17 +177,22 @@ export default function ChecklistPage() {
           const percent = catTasks.length > 0 ? Math.round((done / catTasks.length) * 100) : 0;
 
           return (
-            <TabsContent key={cat.value} value={cat.value} className="space-y-4 mt-4">
-              <ProgressBar value={percent} label={`${t(cat.labelKey)} Progress`} />
+            <TabsContent key={cat.value} value={cat.value} className="space-y-4 mt-6">
+              <ProgressBar value={percent} label={t(cat.labelKey)} />
 
               {percent === 100 && (
-                <div className="text-center py-4 rounded-xl bg-success/10 border border-success/30">
-                  <p className="text-2xl mb-1">🎉</p>
-                  <p className="font-bold text-success">{t("checklist.complete")}</p>
+                <div className="glass text-center relative sparkle overflow-hidden">
+                  <div
+                    className="absolute inset-0 opacity-30"
+                    style={{
+                      background: "linear-gradient(135deg, rgba(167,232,189,0.4) 0%, rgba(184,181,255,0.2) 100%)",
+                    }}
+                  />
+                  <p className="relative font-bold">{t("checklist.complete")}</p>
                 </div>
               )}
 
-              <div className="space-y-2">
+              <div className="space-y-2 stagger">
                 {filtered.length === 0 ? (
                   <p className="text-muted-foreground text-sm text-center py-8">
                     {t("checklist.empty")}

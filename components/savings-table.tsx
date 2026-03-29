@@ -143,7 +143,7 @@ export function SavingsTable({ savings, onUpdate }: SavingsTableProps) {
         {savings.map((entry) => {
           const actualCumulative = (entry.actualSalary ?? 0) + (entry.actualSideIncome ?? 0);
           return (
-            <div key={entry.month} className="border border-border rounded-lg p-3 bg-card">
+            <div key={entry.month} className="glass p-3">
               <p className="font-semibold text-navy mb-2">{formatMonth(entry.month)}</p>
               <div className="space-y-1.5 text-sm">
                 <div className="flex items-center justify-between">

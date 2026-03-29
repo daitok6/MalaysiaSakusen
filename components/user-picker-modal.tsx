@@ -8,8 +8,8 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { useLocale } from "./locale-provider";
+import { UserCircle } from "lucide-react";
 
 export function useCurrentUser() {
   const [user, setUser] = useState<string | null>(null);
@@ -38,25 +38,29 @@ export function UserPickerModal({ userNames, onSelect, open }: UserPickerModalPr
 
   return (
     <Dialog open={open}>
-      <DialogContent className="sm:max-w-md" showCloseButton={false}>
+      <DialogContent className="sm:max-w-md rounded-2xl" showCloseButton={false}>
         <DialogHeader>
-          <DialogTitle className="text-navy text-center text-xl">
+          <div className="flex justify-center mb-2">
+            <div className="w-12 h-12 rounded-2xl bg-lavender/20 flex items-center justify-center">
+              <UserCircle size={28} className="text-lavender-foreground" />
+            </div>
+          </div>
+          <DialogTitle className="text-center text-xl font-bold">
             {t("user.welcome")}
           </DialogTitle>
-          <DialogDescription className="text-center">
+          <DialogDescription className="text-center leading-relaxed">
             {t("user.prompt")}
           </DialogDescription>
         </DialogHeader>
         <div className="flex gap-4 justify-center pt-4">
           {userNames.map((name) => (
-            <Button
+            <button
               key={name}
-              variant="outline"
-              className="h-20 w-32 text-lg font-semibold border-2 hover:border-primary hover:bg-primary/10"
+              className="h-20 w-32 text-lg font-bold rounded-2xl border-2 border-border bg-card hover:border-lavender hover:bg-lavender/10 transition-all duration-200 cursor-pointer"
               onClick={() => onSelect(name)}
             >
               {name}
-            </Button>
+            </button>
           ))}
         </div>
       </DialogContent>

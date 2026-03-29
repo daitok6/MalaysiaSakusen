@@ -10,7 +10,7 @@ type LocaleContextType = {
 };
 
 const LocaleContext = createContext<LocaleContextType>({
-  locale: "en",
+  locale: "ja",
   setLocale: () => {},
   t: (key) => key,
 });
@@ -20,7 +20,7 @@ export function useLocale() {
 }
 
 export function LocaleProvider({ children }: { children: React.ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>("en");
+  const [locale, setLocaleState] = useState<Locale>("ja");
 
   const setLocale = useCallback((l: Locale) => {
     setLocaleState(l);

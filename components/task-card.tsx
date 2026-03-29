@@ -1,21 +1,20 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { useLocale } from "./locale-provider";
+import { AlertTriangle, Clock, Link2 } from "lucide-react";
 import type { Task, TaskStatus } from "@/lib/types";
 
-const priorityStyles: Record<string, string> = {
-  critical: "bg-primary/15 text-primary border-primary/30",
-  high: "bg-gold/15 text-amber-700 border-gold/30",
-  medium: "bg-navy/10 text-navy border-navy/20",
-  low: "bg-muted text-muted-foreground border-border",
+const priorityPills: Record<string, string> = {
+  critical: "pill-coral",
+  high: "pill-marigold",
+  medium: "pill-sky",
+  low: "pill-muted",
 };
 
 const statusStyles: Record<TaskStatus, string> = {
   todo: "bg-muted text-muted-foreground",
-  in_progress: "bg-gold/20 text-amber-700",
-  done: "bg-success/15 text-success",
+  in_progress: "bg-lavender/30 text-lavender-foreground",
+  done: "bg-mint/40 text-mint-foreground",
 };
 
 type TaskCardProps = {
@@ -35,63 +34,61 @@ export function TaskCard({ task, onStatusChange }: TaskCardProps) {
   };
 
   return (
-    <Card className={`transition-all ${task.status === "done" ? "opacity-60" : ""} ${isOverdue ? "border-primary/50" : ""}`}>
-      <CardContent className="pt-4 pb-4">
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-              <Badge variant="outline" className={`text-[10px] ${priorityStyles[task.priority]}`}>
-                {t(`priority.${task.priority}`)}
-              </Badge>
-              {task.assignee && (
-                <Badge variant="outline" className="text-[10px]">
-                  {task.assignee}
-                </Badge>
-              )}
-              {task.dependsOn && task.dependsOn.length > 0 && (
-                <span className="text-[10px] text-muted-foreground">
-                  {t("task.needs")} {task.dependsOn.join(", ")}
-                </span>
-              )}
-            </div>
-            <p className={`font-medium text-sm ${task.status === "done" ? "line-through text-muted-foreground" : "text-navy"}`}>
-              <span className="text-muted-foreground mr-1.5 font-mono text-xs">{task.id}</span>
-              {task.title}
-            </p>
-            {task.deadline && (
-              <p className={`text-xs mt-1 ${isOverdue ? "text-primary font-medium" : "text-muted-foreground"}`}>
-                {isOverdue ? t("task.overdue") + " " : t("task.due") + " "}
-                {new Date(task.deadline).toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              </p>
+    <div className={`glass card-hover transition-all ${task.status === "done" ? "opacity-50" : ""} ${isOverdue ? "border-coral/50 glow-coral" : ""}`}>
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-2 flex-wrap">
+            <span className={`pill bounce-in ${priorityPills[task.priority]}`}>
+              {t(`priority.${task.priority}`)}
+            </span>
+            {task.assignee && (
+              <span className="pill pill-blush bounce-in">{task.assignee}</span>
+            )}
+            {task.dependsOn && task.dependsOn.length > 0 && (
+              <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
+                <Link2 size={11} />
+                {task.dependsOn.join(", ")}
+              </span>
             )}
           </div>
-          <div className="flex rounded-lg overflow-hidden border border-border shrink-0">
-            {statuses.map((s) => {
-              const abbrevLabels: Record<TaskStatus, string> = {
-                todo: "T",
-                in_progress: "IP",
-                done: "D",
-              };
-              return (
-                <button
-                  key={s}
-                  onClick={() => onStatusChange(task.id, s)}
-                  className={`px-2 py-1 text-[10px] font-medium transition-colors ${
-                    task.status === s ? statusStyles[s] : "hover:bg-muted/50"
-                  }`}
-                >
-                  <span className="sm:hidden">{abbrevLabels[s]}</span>
-                  <span className="hidden sm:inline">{statusLabels[s]}</span>
-                </button>
-              );
-            })}
-          </div>
+          <p className={`font-medium text-sm leading-relaxed ${task.status === "done" ? "line-through text-muted-foreground" : ""}`}>
+            <span className="text-muted-foreground mr-1.5 text-xs font-bold tabular-nums">{task.id}</span>
+            {task.title}
+          </p>
+          {task.deadline && (
+            <p className={`flex items-center gap-1 text-xs mt-1.5 ${isOverdue ? "text-coral-foreground font-medium" : "text-muted-foreground"}`}>
+              {isOverdue ? <AlertTriangle size={12} /> : <Clock size={12} />}
+              {isOverdue ? t("task.overdue") + " " : t("task.due") + " "}
+              {new Date(task.deadline).toLocaleDateString("ja-JP", {
+                month: "short",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </p>
+          )}
         </div>
-      </CardContent>
-    </Card>
+        <div className="flex rounded-xl overflow-hidden border border-white/20 shrink-0 backdrop-blur-sm">
+          {statuses.map((s) => {
+            const abbrevLabels: Record<TaskStatus, string> = {
+              todo: "T",
+              in_progress: "IP",
+              done: "D",
+            };
+            return (
+              <button
+                key={s}
+                onClick={() => onStatusChange(task.id, s)}
+                className={`px-2.5 py-1.5 text-[11px] font-medium transition-all duration-200 cursor-pointer ${
+                  task.status === s ? statusStyles[s] : "hover:bg-white/30"
+                }`}
+              >
+                <span className="sm:hidden">{abbrevLabels[s]}</span>
+                <span className="hidden sm:inline">{statusLabels[s]}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
   );
 }

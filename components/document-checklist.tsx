@@ -1,8 +1,7 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLocale } from "./locale-provider";
+import { FolderOpen } from "lucide-react";
 import type { TrackerDocument, DocumentStatus } from "@/lib/types";
 
 type DocumentChecklistProps = {
@@ -10,29 +9,35 @@ type DocumentChecklistProps = {
   onStatusChange: (id: string, status: DocumentStatus) => void;
 };
 
+const statusPills: Record<DocumentStatus, string> = {
+  not_started: "pill-muted",
+  in_progress: "pill-sky",
+  ready: "pill-mint",
+};
+
+const statusLabelKeys: Record<DocumentStatus, string> = {
+  not_started: "visa.docs.notStarted",
+  in_progress: "visa.docs.inProgress",
+  ready: "visa.docs.readyStatus",
+};
+
 export function DocumentChecklist({ documents, onStatusChange }: DocumentChecklistProps) {
   const { t } = useLocale();
   const ready = documents.filter((d) => d.status === "ready").length;
 
-  const statusStyles: Record<DocumentStatus, { bg: string; text: string; labelKey: string }> = {
-    not_started: { bg: "bg-muted", text: "text-muted-foreground", labelKey: "visa.docs.notStarted" },
-    in_progress: { bg: "bg-gold/20", text: "text-amber-700", labelKey: "visa.docs.inProgress" },
-    ready: { bg: "bg-success/15", text: "text-success", labelKey: "visa.docs.readyStatus" },
-  };
-
   return (
-    <Card>
-      <CardHeader className="pb-3">
-        <CardTitle className="text-base text-navy flex items-center justify-between">
-          <span>📁 {t("visa.docs.title")}</span>
-          <span className="text-sm font-normal text-muted-foreground">
-            {ready}/{documents.length} {t("visa.docs.ready")}
-          </span>
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-2">
-        {documents.map((doc) => {
-          const style = statusStyles[doc.status];
+    <div className="glass">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <FolderOpen size={16} className="text-marigold-foreground" />
+          <h3 className="font-bold text-sm">{t("visa.docs.title")}</h3>
+        </div>
+        <span className="text-xs text-muted-foreground font-bold tabular-nums">
+          {ready}/{documents.length} {t("visa.docs.ready")}
+        </span>
+      </div>
+      <div className="space-y-2">
+        {documents.map((doc, i) => {
           const nextStatus: DocumentStatus =
             doc.status === "not_started"
               ? "in_progress"
@@ -43,25 +48,23 @@ export function DocumentChecklist({ documents, onStatusChange }: DocumentCheckli
           return (
             <div
               key={doc.id}
-              className="flex items-center justify-between py-2 border-b border-border last:border-0"
+              className="flex items-center justify-between py-2.5 border-b border-white/10 last:border-0 fade-in-up"
+              style={{ animationDelay: `${i * 0.06}s` }}
             >
-              <div className="flex items-center gap-3">
-                <span className="text-lg">
-                  {doc.status === "ready" ? "✅" : doc.status === "in_progress" ? "🟡" : "⭕"}
-                </span>
-                <span className={`text-sm ${doc.status === "ready" ? "line-through text-muted-foreground" : "text-navy"}`}>
-                  {doc.name}
-                </span>
-              </div>
-              <button onClick={() => onStatusChange(doc.id, nextStatus)}>
-                <Badge className={`${style.bg} ${style.text} border-0 cursor-pointer hover:opacity-80 text-xs`}>
-                  {t(style.labelKey)}
-                </Badge>
+              <span className={`text-sm leading-relaxed ${doc.status === "ready" ? "line-through text-muted-foreground" : ""}`}>
+                {doc.name}
+              </span>
+              <button
+                onClick={() => onStatusChange(doc.id, nextStatus)}
+                className={`pill ${statusPills[doc.status]} cursor-pointer hover:opacity-70 transition-opacity shrink-0 ml-3 bounce-in`}
+                style={{ animationDelay: `${i * 0.08}s` }}
+              >
+                {t(statusLabelKeys[doc.status])}
               </button>
             </div>
           );
         })}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
