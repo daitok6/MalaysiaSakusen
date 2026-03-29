@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { createContext, useContext, useCallback } from "react";
 import { translations, type Locale } from "@/lib/i18n";
 
 type LocaleContextType = {
@@ -20,25 +20,14 @@ export function useLocale() {
 }
 
 export function LocaleProvider({ children }: { children: React.ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>("ja");
-
-  const setLocale = useCallback((l: Locale) => {
-    setLocaleState(l);
-    localStorage.setItem("sakusen-locale", l);
-  }, []);
-
-  useEffect(() => {
-    const saved = localStorage.getItem("sakusen-locale") as Locale | null;
-    if (saved && (saved === "en" || saved === "ja")) {
-      setLocaleState(saved);
-    }
-  }, []);
+  const locale: Locale = "ja";
+  const setLocale = useCallback(() => {}, []);
 
   const t = useCallback(
     (key: string): string => {
       return translations[locale][key] ?? key;
     },
-    [locale]
+    []
   );
 
   return (

@@ -41,7 +41,7 @@ type NavProps = {
 export function Nav({ userName }: NavProps) {
   const pathname = usePathname();
   const { currency, setCurrency } = useCurrency();
-  const { locale, setLocale, t } = useLocale();
+  const { t } = useLocale();
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/15 bg-white/50 backdrop-blur-xl">
@@ -74,12 +74,6 @@ export function Nav({ userName }: NavProps) {
           </nav>
         </div>
         <div className="flex items-center gap-2">
-          <button
-            onClick={() => setLocale(locale === "en" ? "ja" : "en")}
-            className="h-8 px-3 rounded-xl bg-muted text-foreground text-xs font-medium hover:bg-lavender/20 transition-all duration-200 cursor-pointer"
-          >
-            {locale === "en" ? "JA" : "EN"}
-          </button>
           <Select value={currency} onValueChange={(v) => setCurrency(v as Currency)}>
             <SelectTrigger className="w-[88px] h-8 bg-muted border-0 text-foreground text-xs rounded-xl cursor-pointer">
               <SelectValue />

@@ -301,7 +301,7 @@ export default function SummaryPage() {
                 </div>
                 <div className={`flex-1 ${isPast ? "opacity-40" : ""}`}>
                   <p className="text-sm font-medium leading-relaxed">
-                    {t("summary.locale") === "ja" ? m.ja : m.en}
+                    {m.ja}
                   </p>
                 </div>
                 {isPast ? (

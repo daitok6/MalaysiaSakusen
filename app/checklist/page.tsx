@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import { ParallaxHero } from "@/components/parallax-hero";
 import { TaskCard } from "@/components/task-card";
 import { ProgressBar } from "@/components/progress-bar";
@@ -13,11 +14,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useLocale } from "@/components/locale-provider";
-import { FileText, Coins, Rocket, Home, Monitor } from "lucide-react";
+import { FileText, Coins, Rocket, Home, Monitor, ListChecks, ArrowUpDown } from "lucide-react";
 import type { Task, TaskCategory, TaskStatus } from "@/lib/types";
 import type { LucideIcon } from "lucide-react";
 
-const categories: { value: TaskCategory; labelKey: string; Icon: LucideIcon }[] = [
+const categories: { value: TaskCategory | "all"; labelKey: string; Icon: LucideIcon }[] = [
+  { value: "all", labelKey: "checklist.category.all", Icon: ListChecks },
   { value: "visa", labelKey: "checklist.category.visa", Icon: FileText },
   { value: "income", labelKey: "checklist.category.income", Icon: Coins },
   { value: "business", labelKey: "checklist.category.business", Icon: Rocket },
@@ -25,14 +27,46 @@ const categories: { value: TaskCategory; labelKey: string; Icon: LucideIcon }[] 
   { value: "tech", labelKey: "checklist.category.tech", Icon: Monitor },
 ];
 
+type SortOption = "default" | "priority" | "deadline" | "status" | "name";
+
+const priorityOrder: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3 };
+const statusOrder: Record<string, number> = { in_progress: 0, todo: 1, done: 2 };
+
+function sortTasks(tasks: Task[], sort: SortOption): Task[] {
+  if (sort === "default") return tasks;
+  return [...tasks].sort((a, b) => {
+    switch (sort) {
+      case "priority":
+        return priorityOrder[a.priority] - priorityOrder[b.priority];
+      case "deadline": {
+        if (!a.deadline && !b.deadline) return 0;
+        if (!a.deadline) return 1;
+        if (!b.deadline) return -1;
+        return new Date(a.deadline).getTime() - new Date(b.deadline).getTime();
+      }
+      case "status":
+        return statusOrder[a.status] - statusOrder[b.status];
+      case "name":
+        return a.title.localeCompare(b.title, "ja");
+      default:
+        return 0;
+    }
+  });
+}
+
 export default function ChecklistPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [filterAssignee, setFilterAssignee] = useState<string>("all");
   const [filterPriority, setFilterPriority] = useState<string>("all");
+  const [sortBy, setSortBy] = useState<SortOption>("default");
   const [showFilters, setShowFilters] = useState(false);
+  const [activeTab, setActiveTab] = useState<string>("all");
+  const [highlightedTask, setHighlightedTask] = useState<string | null>(null);
+  const taskRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const { t } = useLocale();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     fetch("/api/tasks")
@@ -41,6 +75,31 @@ export default function ChecklistPage() {
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
+
+  // Handle ?task=V1 query param — switch to correct tab and scroll to task
+  useEffect(() => {
+    const taskId = searchParams.get("task");
+    if (!taskId || tasks.length === 0) return;
+
+    const task = tasks.find((t) => t.id === taskId);
+    if (!task) return;
+
+    // Switch to the "all" tab so we can always find the task
+    setActiveTab("all");
+    setHighlightedTask(taskId);
+
+    // Scroll to the task after tab switch renders
+    setTimeout(() => {
+      const el = taskRefs.current[taskId];
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }, 200);
+
+    // Remove highlight after 3 seconds
+    const timer = setTimeout(() => setHighlightedTask(null), 3000);
+    return () => clearTimeout(timer);
+  }, [searchParams, tasks]);
 
   const handleStatusChange = async (id: string, status: TaskStatus) => {
     const userName = localStorage.getItem("sakusen-user") || "Unknown";
@@ -84,6 +143,14 @@ export default function ChecklistPage() {
     );
   }
 
+  const sortLabels: Record<SortOption, string> = {
+    default: "デフォルト",
+    priority: "優先度",
+    deadline: "締切日",
+    status: "ステータス",
+    name: "名前",
+  };
+
   return (
     <div className="space-y-8">
       {/* Clipboard Hero */}
@@ -116,7 +183,7 @@ export default function ChecklistPage() {
       <div className={`flex gap-2 flex-wrap ${showFilters ? "" : "hidden md:flex"}`}>
         <Select value={filterStatus} onValueChange={(v) => setFilterStatus(v ?? "all")}>
           <SelectTrigger className="w-full sm:w-[130px] h-9 text-xs rounded-xl border-white/20 bg-white/50 backdrop-blur-sm cursor-pointer">
-            <SelectValue placeholder="Status" />
+            <SelectValue placeholder="ステータス" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">{t("checklist.filter.allStatus")}</SelectItem>
@@ -127,7 +194,7 @@ export default function ChecklistPage() {
         </Select>
         <Select value={filterAssignee} onValueChange={(v) => setFilterAssignee(v ?? "all")}>
           <SelectTrigger className="w-full sm:w-[130px] h-9 text-xs rounded-xl border-white/20 bg-white/50 backdrop-blur-sm cursor-pointer">
-            <SelectValue placeholder="Assignee" />
+            <SelectValue placeholder="担当者" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">{t("checklist.filter.everyone")}</SelectItem>
@@ -138,7 +205,7 @@ export default function ChecklistPage() {
         </Select>
         <Select value={filterPriority} onValueChange={(v) => setFilterPriority(v ?? "all")}>
           <SelectTrigger className="w-full sm:w-[130px] h-9 text-xs rounded-xl border-white/20 bg-white/50 backdrop-blur-sm cursor-pointer">
-            <SelectValue placeholder="Priority" />
+            <SelectValue placeholder="優先度" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">{t("checklist.filter.allPriority")}</SelectItem>
@@ -148,13 +215,26 @@ export default function ChecklistPage() {
             <SelectItem value="low">{t("priority.low")}</SelectItem>
           </SelectContent>
         </Select>
+        <Select value={sortBy} onValueChange={(v) => setSortBy(v as SortOption)}>
+          <SelectTrigger className="w-full sm:w-[150px] h-9 text-xs rounded-xl border-white/20 bg-white/50 backdrop-blur-sm cursor-pointer">
+            <div className="flex items-center gap-1.5">
+              <ArrowUpDown size={12} />
+              <SelectValue placeholder="並べ替え" />
+            </div>
+          </SelectTrigger>
+          <SelectContent>
+            {(Object.keys(sortLabels) as SortOption[]).map((key) => (
+              <SelectItem key={key} value={key}>{sortLabels[key]}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Floating pill tabs */}
-      <Tabs defaultValue="visa">
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="w-full justify-start overflow-x-auto no-scrollbar bg-white/40 backdrop-blur-md border border-white/20 rounded-2xl gap-0.5 sm:gap-1 p-1 sm:p-1.5 flex-nowrap">
           {categories.map((cat) => {
-            const catTasks = tasks.filter((t) => t.category === cat.value);
+            const catTasks = cat.value === "all" ? tasks : tasks.filter((t) => t.category === cat.value);
             const done = catTasks.filter((t) => t.status === "done").length;
             return (
               <TabsTrigger
@@ -171,8 +251,8 @@ export default function ChecklistPage() {
         </TabsList>
 
         {categories.map((cat) => {
-          const catTasks = tasks.filter((task) => task.category === cat.value);
-          const filtered = filterTasks(catTasks);
+          const catTasks = cat.value === "all" ? tasks : tasks.filter((task) => task.category === cat.value);
+          const filtered = sortTasks(filterTasks(catTasks), sortBy);
           const done = catTasks.filter((task) => task.status === "done").length;
           const percent = catTasks.length > 0 ? Math.round((done / catTasks.length) * 100) : 0;
 
@@ -199,11 +279,20 @@ export default function ChecklistPage() {
                   </p>
                 ) : (
                   filtered.map((task) => (
-                    <TaskCard
+                    <div
                       key={task.id}
-                      task={task}
-                      onStatusChange={handleStatusChange}
-                    />
+                      ref={(el) => { taskRefs.current[task.id] = el; }}
+                      className={`transition-all duration-500 ${
+                        highlightedTask === task.id
+                          ? "ring-2 ring-lavender ring-offset-2 rounded-2xl"
+                          : ""
+                      }`}
+                    >
+                      <TaskCard
+                        task={task}
+                        onStatusChange={handleStatusChange}
+                      />
+                    </div>
                   ))
                 )}
               </div>

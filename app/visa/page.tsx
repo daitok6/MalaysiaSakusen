@@ -123,7 +123,7 @@ export default function VisaPage() {
           <CircularProgress value={countdownPercent} size={100} strokeWidth={6}>
             <div className="text-center">
               <p className="text-2xl font-bold tracking-tighter gradient-text">{daysUntilApp}</p>
-              <p className="text-[10px] text-muted-foreground">days</p>
+              <p className="text-[10px] text-muted-foreground">日</p>
             </div>
           </CircularProgress>
         </TiltCard>

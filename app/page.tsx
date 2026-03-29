@@ -8,7 +8,8 @@ import { EncouragementBanner } from "@/components/encouragement-banner";
 import { ProgressBar } from "@/components/progress-bar";
 import { Money } from "@/components/money";
 import { useLocale } from "@/components/locale-provider";
-import { CheckCircle2, PiggyBank, FileCheck, Clock } from "lucide-react";
+import { CheckCircle2, PiggyBank, FileCheck, Clock, ArrowRight } from "lucide-react";
+import Link from "next/link";
 import type { Task, SavingsEntry, VisaStep } from "@/lib/types";
 
 export default function DashboardPage() {
@@ -136,9 +137,10 @@ export default function DashboardPage() {
         ) : (
           <div className="space-y-2 stagger">
             {upcoming.map((task) => (
-              <div
+              <Link
                 key={task.id}
-                className="glass card-hover flex items-center justify-between !py-3 !px-4"
+                href={`/checklist?task=${task.id}`}
+                className="glass card-hover flex items-center justify-between !py-3 !px-4 group"
               >
                 <div className="flex items-center gap-3">
                   <span className="pill pill-muted text-[11px] font-bold tabular-nums">{task.id}</span>
@@ -153,18 +155,21 @@ export default function DashboardPage() {
                     </p>
                   </div>
                 </div>
-                <span
-                  className={`pill bounce-in ${
-                    task.priority === "critical"
-                      ? "pill-coral"
-                      : task.priority === "high"
-                      ? "pill-marigold"
-                      : "pill-muted"
-                  }`}
-                >
-                  {t(`priority.${task.priority}`)}
-                </span>
-              </div>
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`pill bounce-in ${
+                      task.priority === "critical"
+                        ? "pill-coral"
+                        : task.priority === "high"
+                        ? "pill-marigold"
+                        : "pill-muted"
+                    }`}
+                  >
+                    {t(`priority.${task.priority}`)}
+                  </span>
+                  <ArrowRight size={14} className="text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+              </Link>
             ))}
           </div>
         )}
