@@ -1,8 +1,8 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Money } from "@/components/money";
 import { useLocale } from "./locale-provider";
+import { CircleCheck, CircleMinus, ShieldAlert } from "lucide-react";
 import type { SavingsEntry } from "@/lib/types";
 
 type CheckpointGateProps = {
@@ -34,28 +34,29 @@ export function CheckpointGate({ savings }: CheckpointGateProps) {
   ];
 
   return (
-    <Card className="border-gold/40 bg-gradient-to-br from-gold/5 to-transparent">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-base text-navy flex items-center gap-2">
-          🚦 {t("finances.checkpoint.title")}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-3">
+    <div className="glass">
+      <div className="flex items-center gap-2 mb-4">
+        <ShieldAlert size={18} className="text-marigold-foreground" />
+        <h3 className="text-sm font-bold">{t("finances.checkpoint.title")}</h3>
+      </div>
+      <div className="space-y-3">
         {checks.map((check) => (
           <div key={check.label} className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="text-lg">{check.passed ? "✅" : "❌"}</span>
-              <span className="text-sm font-medium">{check.label}</span>
+            <div className="flex items-center gap-3">
+              {check.passed ? (
+                <CircleCheck size={20} className="text-mint-foreground" />
+              ) : (
+                <CircleMinus size={20} className="text-muted-foreground" />
+              )}
+              <span className="text-sm">{check.label}</span>
             </div>
-            <span className={`text-sm font-bold ${check.passed ? "text-success" : "text-primary"}`}>
-              {check.display}
-            </span>
+            <span className="text-sm font-bold tabular-nums">{check.display}</span>
           </div>
         ))}
-        <p className="text-xs text-muted-foreground mt-2">
+        <p className="text-xs text-muted-foreground mt-3 pt-3 border-t border-border leading-relaxed">
           {t("finances.checkpoint.warning")}
         </p>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

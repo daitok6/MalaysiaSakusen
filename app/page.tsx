@@ -1,15 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { FlightPath } from "@/components/flight-path";
+import { ParallaxHero } from "@/components/parallax-hero";
 import { Countdown } from "@/components/countdown";
 import { StatCard } from "@/components/stat-card";
 import { EncouragementBanner } from "@/components/encouragement-banner";
 import { ProgressBar } from "@/components/progress-bar";
 import { Money } from "@/components/money";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { useLocale } from "@/components/locale-provider";
+import { CheckCircle2, PiggyBank, FileCheck, Clock } from "lucide-react";
 import type { Task, SavingsEntry, VisaStep } from "@/lib/types";
 
 export default function DashboardPage() {
@@ -37,7 +36,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <p className="text-muted-foreground">{t("dashboard.loading")}</p>
+        <div className="w-12 h-12 rounded-full border-2 border-lavender border-t-transparent animate-spin" />
       </div>
     );
   }
@@ -69,109 +68,107 @@ export default function DashboardPage() {
     .sort((a, b) => new Date(a.deadline!).getTime() - new Date(b.deadline!).getTime())
     .slice(0, 5);
 
-  const categoryIcons: Record<string, string> = {
-    visa: "📄",
-    income: "💰",
-    business: "🚀",
-    life: "🏠",
-    tech: "💻",
-  };
-
   return (
-    <div className="space-y-6">
-      {/* Flight Path Hero */}
-      <Card className="overflow-hidden">
-        <CardContent className="pt-6 pb-4">
-          <h2 className="text-center text-navy font-bold text-lg mb-4">
-            {t("dashboard.hero.title")}
-          </h2>
-          <FlightPath />
-        </CardContent>
-      </Card>
+    <div className="space-y-8">
+      {/* Parallax Hero with 3D Globe */}
+      <div className="-mx-6 -mt-10">
+        <ParallaxHero
+          sceneUrl="/scenes/globe.splinecode"
+          fallbackSrc="/illustrations/globe.svg"
+          fallbackAlt="3D Globe showing Tokyo to KL route"
+        >
+          <div className="space-y-4 px-6">
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tighter gradient-text">
+              {t("dashboard.hero.title")}
+            </h1>
+            <p className="text-muted-foreground text-lg">
+              だいと＆こうめ — 東京 → クアラルンプール
+            </p>
+          </div>
+        </ParallaxHero>
+      </div>
 
-      {/* Countdown + Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Floating Countdown overlapping hero */}
+      <div className="-mt-16 relative z-20 max-w-sm mx-auto">
         <Countdown />
+      </div>
+
+      {/* Stats Grid — asymmetric bento */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 stagger">
         <StatCard
-          icon="✅"
+          Icon={CheckCircle2}
           label={t("dashboard.stats.tasks")}
           value={`${taskPercent}%`}
           subtitle={`${doneTasks} / ${totalTasks}`}
+          color="mint"
         />
         <StatCard
-          icon="💰"
+          Icon={PiggyBank}
           label={t("dashboard.stats.savings")}
           value={<Money amount={currentSavings} from="JPY" />}
           subtitle={t("dashboard.stats.savingsTarget")}
+          color="marigold"
+          className="md:col-span-2 lg:col-span-2"
         />
         <StatCard
-          icon="📄"
+          Icon={FileCheck}
           label={t("dashboard.stats.visa")}
           value={`${t("dashboard.stats.phase")} ${currentPhase}`}
-          subtitle={`${t(phaseKeys[currentPhase])} • ${visaPercent}%`}
+          subtitle={`${t(phaseKeys[currentPhase])} · ${visaPercent}%`}
+          color="lavender"
         />
       </div>
 
-      {/* Progress Bars */}
-      <Card>
-        <CardContent className="pt-6 space-y-4">
-          <ProgressBar value={taskPercent} label={t("dashboard.progress.overall")} />
-          <ProgressBar value={savingsPercent} label={t("dashboard.progress.savings")} />
-          <ProgressBar value={visaPercent} label={t("dashboard.progress.visa")} />
-        </CardContent>
-      </Card>
+      {/* Progress */}
+      <div className="glass space-y-5">
+        <ProgressBar value={taskPercent} label={t("dashboard.progress.overall")} />
+        <ProgressBar value={savingsPercent} label={t("dashboard.progress.savings")} />
+        <ProgressBar value={visaPercent} label={t("dashboard.progress.visa")} />
+      </div>
 
-      {/* Encouragement */}
       <EncouragementBanner />
 
       {/* Upcoming Deadlines */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-navy text-base">{t("dashboard.deadlines.title")}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {upcoming.length === 0 ? (
-            <p className="text-muted-foreground text-sm">{t("dashboard.deadlines.empty")}</p>
-          ) : (
-            <div className="space-y-3">
-              {upcoming.map((task) => (
-                <div
-                  key={task.id}
-                  className="flex items-center justify-between py-2 border-b border-border last:border-0"
-                >
-                  <div className="flex items-center gap-3">
-                    <span>{categoryIcons[task.category] || "📌"}</span>
-                    <div>
-                      <p className="text-sm font-medium text-navy">
-                        <span className="font-mono text-xs text-muted-foreground mr-1">{task.id}</span>
-                        {task.title}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {new Date(task.deadline!).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                        })}
-                      </p>
-                    </div>
+      <div className="space-y-4">
+        <h2 className="text-lg font-bold tracking-tight slide-in-left">{t("dashboard.deadlines.title")}</h2>
+        {upcoming.length === 0 ? (
+          <p className="text-muted-foreground text-sm">{t("dashboard.deadlines.empty")}</p>
+        ) : (
+          <div className="space-y-2 stagger">
+            {upcoming.map((task) => (
+              <div
+                key={task.id}
+                className="glass card-hover flex items-center justify-between !py-3 !px-4"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="pill pill-muted text-[11px] font-bold tabular-nums">{task.id}</span>
+                  <div>
+                    <p className="text-sm font-medium leading-relaxed">{task.title}</p>
+                    <p className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
+                      <Clock size={11} />
+                      {new Date(task.deadline!).toLocaleDateString("ja-JP", {
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </p>
                   </div>
-                  <Badge
-                    variant="outline"
-                    className={
-                      task.priority === "critical"
-                        ? "bg-primary/10 text-primary border-primary/30"
-                        : task.priority === "high"
-                        ? "bg-gold/10 text-amber-700 border-gold/30"
-                        : ""
-                    }
-                  >
-                    {t(`priority.${task.priority}`)}
-                  </Badge>
                 </div>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+                <span
+                  className={`pill bounce-in ${
+                    task.priority === "critical"
+                      ? "pill-coral"
+                      : task.priority === "high"
+                      ? "pill-marigold"
+                      : "pill-muted"
+                  }`}
+                >
+                  {t(`priority.${task.priority}`)}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

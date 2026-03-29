@@ -4,6 +4,7 @@ export const translations: Record<Locale, Record<string, string>> = {
   en: {
     // Nav
     "nav.dashboard": "Dashboard",
+    "nav.summary": "Summary",
     "nav.checklist": "Checklist",
     "nav.finances": "Finances",
     "nav.visa": "Visa",
@@ -126,10 +127,34 @@ export const translations: Record<Locale, Record<string, string>> = {
     // Flight path
     "flight.tokyo": "Tokyo",
     "flight.kl": "Kuala Lumpur",
+
+    // Summary
+    "summary.loading": "Loading summary...",
+    "summary.title": "Summary",
+    "summary.subtitle": "Everything at a glance — Daito & Koume's Malaysia move",
+    "summary.locale": "en",
+    "summary.tasksComplete": "Tasks Done",
+    "summary.savingsProgress": "Savings",
+    "summary.visaProgress": "Visa Steps",
+    "summary.docsReady": "Docs Ready",
+    "summary.checklistBreakdown": "Checklist Breakdown",
+    "summary.viewAll": "View all →",
+    "summary.financesOverview": "Finances Overview",
+    "summary.currentSavings": "Current Savings",
+    "summary.augustCheckpoint": "August Checkpoint",
+    "summary.visaPhases": "Visa Phases",
+    "summary.stepsComplete": "steps done",
+    "summary.documentsStatus": "Documents Status",
+    "summary.keyMilestones": "Key Milestones",
+    "summary.next": "Next",
+    "summary.actionItems": "Action Items",
+    "summary.overdue": "Overdue",
+    "summary.criticalPending": "Critical — Pending",
   },
   ja: {
     // Nav
     "nav.dashboard": "ダッシュボード",
+    "nav.summary": "サマリー",
     "nav.checklist": "チェックリスト",
     "nav.finances": "ファイナンス",
     "nav.visa": "ビザ",
@@ -252,5 +277,28 @@ export const translations: Record<Locale, Record<string, string>> = {
     // Flight path
     "flight.tokyo": "東京",
     "flight.kl": "クアラルンプール",
+
+    // Summary
+    "summary.loading": "サマリー読み込み中...",
+    "summary.title": "サマリー",
+    "summary.subtitle": "すべてを一目で — だいと＆こうめのマレーシア移住",
+    "summary.locale": "ja",
+    "summary.tasksComplete": "完了タスク",
+    "summary.savingsProgress": "貯金",
+    "summary.visaProgress": "ビザステップ",
+    "summary.docsReady": "書類準備済",
+    "summary.checklistBreakdown": "チェックリスト内訳",
+    "summary.viewAll": "すべて見る →",
+    "summary.financesOverview": "ファイナンス概要",
+    "summary.currentSavings": "現在の貯金",
+    "summary.augustCheckpoint": "8月チェックポイント",
+    "summary.visaPhases": "ビザフェーズ",
+    "summary.stepsComplete": "ステップ完了",
+    "summary.documentsStatus": "書類ステータス",
+    "summary.keyMilestones": "主要マイルストーン",
+    "summary.next": "次",
+    "summary.actionItems": "アクション項目",
+    "summary.overdue": "期限超過",
+    "summary.criticalPending": "最重要 — 未完了",
   },
 };

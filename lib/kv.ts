@@ -1,8 +1,12 @@
 import { kv } from "@vercel/kv";
 import type { Task, SavingsEntry, VisaStep, TrackerDocument, Settings } from "./types";
+import { seedTasks, seedSavings, seedVisaSteps, seedDocuments, seedSettings } from "./seed-data";
 
 export async function getTasks(): Promise<Task[]> {
-  return (await kv.get<Task[]>("tasks")) ?? [];
+  const tasks = await kv.get<Task[]>("tasks");
+  if (tasks) return tasks;
+  await kv.set("tasks", seedTasks);
+  return seedTasks;
 }
 
 export async function setTasks(tasks: Task[]): Promise<void> {
@@ -19,7 +23,10 @@ export async function updateTask(id: string, updates: Partial<Task>): Promise<Ta
 }
 
 export async function getSavings(): Promise<SavingsEntry[]> {
-  return (await kv.get<SavingsEntry[]>("savings")) ?? [];
+  const savings = await kv.get<SavingsEntry[]>("savings");
+  if (savings) return savings;
+  await kv.set("savings", seedSavings);
+  return seedSavings;
 }
 
 export async function setSavings(savings: SavingsEntry[]): Promise<void> {
@@ -39,7 +46,10 @@ export async function updateSavingsEntry(
 }
 
 export async function getVisaSteps(): Promise<VisaStep[]> {
-  return (await kv.get<VisaStep[]>("visa_steps")) ?? [];
+  const steps = await kv.get<VisaStep[]>("visa_steps");
+  if (steps) return steps;
+  await kv.set("visa_steps", seedVisaSteps);
+  return seedVisaSteps;
 }
 
 export async function setVisaSteps(steps: VisaStep[]): Promise<void> {
@@ -59,7 +69,10 @@ export async function updateVisaStep(
 }
 
 export async function getDocuments(): Promise<TrackerDocument[]> {
-  return (await kv.get<TrackerDocument[]>("documents")) ?? [];
+  const docs = await kv.get<TrackerDocument[]>("documents");
+  if (docs) return docs;
+  await kv.set("documents", seedDocuments);
+  return seedDocuments;
 }
 
 export async function setDocuments(docs: TrackerDocument[]): Promise<void> {
@@ -79,12 +92,10 @@ export async function updateDocument(
 }
 
 export async function getSettings(): Promise<Settings> {
-  return (
-    (await kv.get<Settings>("settings")) ?? {
-      userNames: ["Daito", "Partner"],
-      preferredCurrency: "JPY",
-    }
-  );
+  const settings = await kv.get<Settings>("settings");
+  if (settings) return settings;
+  await kv.set("settings", seedSettings);
+  return seedSettings;
 }
 
 export async function setSettings(settings: Settings): Promise<void> {

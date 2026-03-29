@@ -1,13 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ProgressBar } from "@/components/progress-bar";
+import { ParallaxHero } from "@/components/parallax-hero";
+import { LiquidProgress } from "@/components/liquid-progress";
+import { TiltCard } from "@/components/tilt-card";
 import { Money } from "@/components/money";
 import { SavingsTable } from "@/components/savings-table";
 import { CostComparison } from "@/components/cost-comparison";
 import { CheckpointGate } from "@/components/checkpoint-gate";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLocale } from "@/components/locale-provider";
+import { TrendingUp } from "lucide-react";
 import type { SavingsEntry } from "@/lib/types";
 
 export default function FinancesPage() {
@@ -43,7 +45,7 @@ export default function FinancesPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <p className="text-muted-foreground">{t("finances.loading")}</p>
+        <div className="w-12 h-12 rounded-full border-2 border-lavender border-t-transparent animate-spin" />
       </div>
     );
   }
@@ -55,80 +57,69 @@ export default function FinancesPage() {
   );
   const savingsPercent = Math.round((currentSavings / savingsTarget) * 100);
 
+  const layerColors = ["pill-mint", "pill-sky", "pill-marigold"];
+
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-navy">{t("finances.title")}</h1>
-        <p className="text-muted-foreground text-sm mt-1">
-          {t("finances.subtitle")}
-        </p>
+    <div className="space-y-10">
+      {/* Piggy Bank Hero */}
+      <div className="-mx-6 -mt-10">
+        <ParallaxHero
+          sceneUrl="/scenes/piggybank.splinecode"
+          fallbackSrc="/illustrations/piggybank.svg"
+          fallbackAlt="3D piggy bank"
+        >
+          <div className="space-y-2 px-6">
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tighter gradient-text">
+              {t("finances.title")}
+            </h1>
+            <p className="text-muted-foreground text-sm">{t("finances.subtitle")}</p>
+          </div>
+        </ParallaxHero>
       </div>
 
-      {/* Savings Progress */}
-      <Card>
-        <CardContent className="pt-6">
-          <div className="flex items-end justify-between mb-3">
-            <div>
-              <p className="text-sm text-muted-foreground">{t("finances.totalSavings")}</p>
-              <p className="text-3xl font-bold text-navy">
-                <Money amount={currentSavings} from="JPY" />
-              </p>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              {t("finances.target")} <Money amount={savingsTarget} from="JPY" />
+      {/* Liquid Savings Progress */}
+      <div className="glass-strong">
+        <div className="flex items-end justify-between mb-4">
+          <div>
+            <p className="text-xs text-muted-foreground font-medium">{t("finances.totalSavings")}</p>
+            <p className="text-3xl font-bold tracking-tight mt-1 gradient-text">
+              <Money amount={currentSavings} from="JPY" />
             </p>
           </div>
-          <ProgressBar value={savingsPercent} />
-        </CardContent>
-      </Card>
-
-      {/* Income by Layer */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-muted-foreground">{t("finances.layer1.title")}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-xs text-muted-foreground">{t("finances.layer1.target")}</p>
-            <p className="text-sm mt-1">{t("finances.layer1.desc")}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-muted-foreground">{t("finances.layer2.title")}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-xs text-muted-foreground">{t("finances.layer2.target")}</p>
-            <p className="text-sm mt-1">{t("finances.layer2.desc")}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-muted-foreground">{t("finances.layer3.title")}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-xs text-muted-foreground">{t("finances.layer3.target")}</p>
-            <p className="text-sm mt-1">{t("finances.layer3.desc")}</p>
-          </CardContent>
-        </Card>
+          <p className="text-sm text-muted-foreground">
+            {t("finances.target")} <Money amount={savingsTarget} from="JPY" />
+          </p>
+        </div>
+        <LiquidProgress value={savingsPercent} />
       </div>
 
-      {/* Monthly Savings Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base text-navy">{t("finances.table.title")}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <SavingsTable savings={savings} onUpdate={handleUpdate} />
-        </CardContent>
-      </Card>
+      {/* Income Layers — stacked card style */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 stagger">
+        {["layer1", "layer2", "layer3"].map((key, i) => (
+          <TiltCard key={key}>
+            <div className="flex items-center gap-2 mb-3">
+              <TrendingUp size={14} className="text-muted-foreground" />
+              <span className={`pill bounce-in ${layerColors[i]}`}>{t(`finances.${key}.title`)}</span>
+            </div>
+            <p className="text-xs text-muted-foreground">{t(`finances.${key}.target`)}</p>
+            <p className="text-sm mt-1 leading-relaxed">{t(`finances.${key}.desc`)}</p>
+          </TiltCard>
+        ))}
+      </div>
 
-      {/* Checkpoint Gate */}
+      {/* Savings Table */}
+      <div className="space-y-3">
+        <h2 className="text-lg font-bold tracking-tight slide-in-left">{t("finances.table.title")}</h2>
+        <div className="glass overflow-x-auto">
+          <SavingsTable savings={savings} onUpdate={handleUpdate} />
+        </div>
+      </div>
+
       <CheckpointGate savings={savings} />
 
-      {/* Cost of Living Comparison */}
-      <div>
-        <h2 className="text-lg font-bold text-navy mb-4">{t("finances.col.title")}</h2>
+      {/* Cost Comparison — bar race */}
+      <div className="space-y-3">
+        <h2 className="text-lg font-bold tracking-tight slide-in-left">{t("finances.col.title")}</h2>
         <CostComparison />
       </div>
     </div>

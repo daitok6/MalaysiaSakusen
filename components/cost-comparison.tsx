@@ -1,8 +1,8 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Money } from "@/components/money";
 import { useLocale } from "./locale-provider";
+import { MapPin } from "lucide-react";
 
 const costKeys = [
   "finances.rent",
@@ -15,53 +15,73 @@ const costKeys = [
 
 const tokyoAmounts = [120000, 15000, 60000, 10000, 25000, 30000];
 const klAmountsMYR = [3000, 400, 2500, 400, 650, 1250];
+// Approximate JPY equivalents for bar width comparison
+const klAmountsJPY = [45000, 6000, 37500, 6000, 9750, 18750];
 
 export function CostComparison() {
   const { t } = useLocale();
   const tokyoTotal = tokyoAmounts.reduce((sum, v) => sum + v, 0);
   const klTotal = klAmountsMYR.reduce((sum, v) => sum + v, 0);
+  const maxAmount = Math.max(...tokyoAmounts);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-base text-navy flex items-center gap-2">
-            🇯🇵 {t("finances.tokyo")}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          {costKeys.map((key, i) => (
-            <div key={key} className="flex justify-between text-sm">
-              <span className="text-muted-foreground">{t(key)}</span>
-              <Money amount={tokyoAmounts[i]} from="JPY" className="font-medium" />
+    <div className="space-y-4">
+      {/* Bar Race */}
+      <div className="glass space-y-4">
+        {costKeys.map((key, i) => {
+          const tokyoWidth = (tokyoAmounts[i] / maxAmount) * 100;
+          const klWidth = (klAmountsJPY[i] / maxAmount) * 100;
+          return (
+            <div key={key} className="space-y-1.5">
+              <span className="text-xs text-muted-foreground font-medium">{t(key)}</span>
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <div
+                    className="h-5 rounded-full bg-coral/60 transition-all duration-1000 ease-out flex items-center justify-end px-2"
+                    style={{ width: `${tokyoWidth}%`, minWidth: "60px" }}
+                  >
+                    <span className="text-[10px] font-bold text-coral-foreground whitespace-nowrap">
+                      <Money amount={tokyoAmounts[i]} from="JPY" />
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div
+                    className="h-5 rounded-full bg-mint/60 transition-all duration-1000 ease-out flex items-center justify-end px-2"
+                    style={{ width: `${klWidth}%`, minWidth: "60px", animationDelay: "0.2s" }}
+                  >
+                    <span className="text-[10px] font-bold text-mint-foreground whitespace-nowrap">
+                      <Money amount={klAmountsMYR[i]} from="MYR" />
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
-          ))}
-          <div className="border-t pt-2 mt-2 flex justify-between font-bold">
-            <span className="text-navy">{t("finances.total")}</span>
-            <Money amount={tokyoTotal} from="JPY" className="text-navy" />
-          </div>
-        </CardContent>
-      </Card>
+          );
+        })}
+      </div>
 
-      <Card className="border-success/30">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-base text-navy flex items-center gap-2">
-            🇲🇾 {t("finances.kl")}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          {costKeys.map((key, i) => (
-            <div key={key} className="flex justify-between text-sm">
-              <span className="text-muted-foreground">{t(key)}</span>
-              <Money amount={klAmountsMYR[i]} from="MYR" className="font-medium" />
-            </div>
-          ))}
-          <div className="border-t pt-2 mt-2 flex justify-between font-bold">
-            <span className="text-navy">{t("finances.total")}</span>
-            <Money amount={klTotal} from="MYR" className="text-success" />
+      {/* Totals */}
+      <div className="grid grid-cols-2 gap-4">
+        <div className="glass card-hover text-center">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <MapPin size={14} className="text-coral-foreground" />
+            <span className="pill pill-coral">{t("finances.tokyo")}</span>
           </div>
-        </CardContent>
-      </Card>
+          <p className="text-xl font-bold tracking-tight">
+            <Money amount={tokyoTotal} from="JPY" />
+          </p>
+        </div>
+        <div className="glass card-hover text-center border-mint/30">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <MapPin size={14} className="text-mint-foreground" />
+            <span className="pill pill-mint">{t("finances.kl")}</span>
+          </div>
+          <p className="text-xl font-bold tracking-tight text-mint-foreground">
+            <Money amount={klTotal} from="MYR" />
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

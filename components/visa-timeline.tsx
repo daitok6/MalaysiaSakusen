@@ -1,14 +1,20 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
 import { useLocale } from "./locale-provider";
 import type { VisaStep, VisaStepStatus } from "@/lib/types";
 
 const statusDotColors: Record<VisaStepStatus, string> = {
   pending: "bg-muted-foreground/30",
-  in_progress: "bg-gold",
-  completed: "bg-success",
-  blocked: "bg-primary",
+  in_progress: "bg-deep-purple",
+  completed: "bg-mint",
+  blocked: "bg-coral",
+};
+
+const statusPills: Record<VisaStepStatus, string> = {
+  pending: "pill-muted",
+  in_progress: "pill-lavender",
+  completed: "pill-mint",
+  blocked: "pill-coral",
 };
 
 type VisaTimelineProps = {
@@ -28,11 +34,11 @@ export function VisaTimeline({ steps, onToggle, onNotesChange }: VisaTimelinePro
     D: { labelKey: "visa.phase.d", periodKey: "visa.phase.d.period" },
   };
 
-  const statusStyles: Record<VisaStepStatus, { bg: string; text: string; labelKey: string }> = {
-    pending: { bg: "bg-muted", text: "text-muted-foreground", labelKey: "visa.status.pending" },
-    in_progress: { bg: "bg-gold/20", text: "text-amber-700", labelKey: "visa.status.in_progress" },
-    completed: { bg: "bg-success/15", text: "text-success", labelKey: "visa.status.completed" },
-    blocked: { bg: "bg-primary/15", text: "text-primary", labelKey: "visa.status.blocked" },
+  const statusLabelKeys: Record<VisaStepStatus, string> = {
+    pending: "visa.status.pending",
+    in_progress: "visa.status.in_progress",
+    completed: "visa.status.completed",
+    blocked: "visa.status.blocked",
   };
 
   return (
@@ -41,24 +47,32 @@ export function VisaTimeline({ steps, onToggle, onNotesChange }: VisaTimelinePro
         const phaseSteps = steps.filter((s) => s.phase === phase).sort((a, b) => a.sortOrder - b.sortOrder);
         const info = phaseInfo[phase];
         const completed = phaseSteps.filter((s) => s.status === "completed").length;
+        const fillPercent = phaseSteps.length > 0 ? (completed / phaseSteps.length) * 100 : 0;
 
         return (
           <div key={phase}>
             <div className="flex items-center gap-3 mb-4">
-              <div className="h-8 w-8 rounded-full bg-navy text-white flex items-center justify-center font-bold text-sm">
+              <div className="h-9 w-9 rounded-xl bg-deep-purple/20 text-deep-purple flex items-center justify-center font-bold text-sm">
                 {phase}
               </div>
               <div>
-                <h3 className="font-bold text-navy">{t(info.labelKey)}</h3>
+                <h3 className="font-bold text-sm">{t(info.labelKey)}</h3>
                 <p className="text-xs text-muted-foreground">
-                  {t(info.periodKey)} • {completed}/{phaseSteps.length} {t("visa.done")}
+                  {t(info.periodKey)} · {completed}/{phaseSteps.length} {t("visa.done")}
                 </p>
               </div>
             </div>
 
-            <div className="ml-4 border-l-2 border-border pl-6 space-y-4">
+            <div className="ml-4 pl-6 space-y-3 relative">
+              {/* Background line */}
+              <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-muted" />
+              {/* Filled line */}
+              <div
+                className="absolute left-0 top-0 w-0.5 bg-gradient-to-b from-deep-purple to-mint transition-all duration-700 ease-out"
+                style={{ height: `${fillPercent}%` }}
+              />
+
               {phaseSteps.map((step) => {
-                const style = statusStyles[step.status];
                 const nextStatus: VisaStepStatus =
                   step.status === "pending"
                     ? "in_progress"
@@ -71,36 +85,29 @@ export function VisaTimeline({ steps, onToggle, onNotesChange }: VisaTimelinePro
                 return (
                   <div key={step.id} className="relative">
                     <div
-                      className={`absolute -left-[31px] top-1.5 h-3 w-3 rounded-full border-2 border-background ${statusDotColors[step.status]}`}
+                      className={`absolute -left-[27px] top-2 h-3.5 w-3.5 rounded-full border-2 border-background ${statusDotColors[step.status]} transition-colors duration-300`}
                     />
-
-                    <div className={`rounded-lg border p-3 ${step.status === "completed" ? "opacity-60" : ""}`}>
+                    <div className={`glass card-hover ${step.status === "completed" ? "opacity-50" : ""}`}>
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex-1">
-                          <p className={`font-medium text-sm ${step.status === "completed" ? "line-through text-muted-foreground" : "text-navy"}`}>
+                          <p className={`font-medium text-sm leading-relaxed ${step.status === "completed" ? "line-through text-muted-foreground" : ""}`}>
                             {step.title}
                           </p>
-                          {step.description && (
-                            <p className="text-xs text-muted-foreground mt-0.5">{step.description}</p>
-                          )}
                           {step.dueDate && (
                             <p className="text-xs text-muted-foreground mt-1">
-                              {t("task.due")} {new Date(step.dueDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                              {t("task.due")} {new Date(step.dueDate).toLocaleDateString("ja-JP", { month: "short", day: "numeric", year: "numeric" })}
                             </p>
                           )}
                         </div>
                         <button
                           onClick={() => onToggle(step.id, nextStatus)}
-                          className="shrink-0"
+                          className={`pill ${statusPills[step.status]} cursor-pointer hover:opacity-70 transition-opacity bounce-in`}
                         >
-                          <Badge className={`${style.bg} ${style.text} border-0 cursor-pointer hover:opacity-80`}>
-                            {t(style.labelKey)}
-                          </Badge>
+                          {t(statusLabelKeys[step.status])}
                         </button>
                       </div>
-
                       <textarea
-                        className="mt-2 w-full text-xs bg-transparent border border-border rounded px-2 py-1 resize-none placeholder:text-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-primary/30"
+                        className="mt-2 w-full text-xs bg-white/30 border border-white/20 rounded-xl px-3 py-2 resize-none placeholder:text-muted-foreground/40 focus:outline-none focus:ring-2 focus:ring-lavender/30 backdrop-blur-sm"
                         placeholder={t("visa.notes.placeholder")}
                         rows={1}
                         value={step.notes || ""}
