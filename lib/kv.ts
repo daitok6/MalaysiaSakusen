@@ -1,6 +1,35 @@
-import { kv } from "@vercel/kv";
+import { Redis } from "@upstash/redis";
 import type { Task, SavingsEntry, VisaStep, TrackerDocument, Settings } from "./types";
 import { seedTasks, seedSavings, seedVisaSteps, seedDocuments, seedSettings } from "./seed-data";
+
+// Support both old KV_REST_API_* vars and new REDIS_URL from Vercel Redis
+function createRedisClient(): Redis {
+  // Option 1: Upstash REST API vars (preferred)
+  if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
+    return new Redis({
+      url: process.env.KV_REST_API_URL,
+      token: process.env.KV_REST_API_TOKEN,
+    });
+  }
+
+  // Option 2: UPSTASH_REDIS_REST_* vars
+  if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+    return new Redis({
+      url: process.env.UPSTASH_REDIS_REST_URL,
+      token: process.env.UPSTASH_REDIS_REST_TOKEN,
+    });
+  }
+
+  // Option 3: REDIS_URL (Vercel Redis auto-injects this)
+  if (process.env.REDIS_URL) {
+    return Redis.fromEnv();
+  }
+
+  // Fallback: let @upstash/redis try auto-detection
+  return Redis.fromEnv();
+}
+
+const kv = createRedisClient();
 
 export async function getTasks(): Promise<Task[]> {
   const tasks = await kv.get<Task[]>("tasks");
