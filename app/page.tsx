@@ -66,7 +66,14 @@ export default function DashboardPage() {
 
   const upcoming = tasks
     .filter((task) => task.status !== "done" && task.deadline)
-    .sort((a, b) => new Date(a.deadline!).getTime() - new Date(b.deadline!).getTime())
+    .sort((a, b) => {
+      const aIsDate = !isNaN(new Date(a.deadline!).getTime());
+      const bIsDate = !isNaN(new Date(b.deadline!).getTime());
+      if (!aIsDate && bIsDate) return -1; // non-date (ASAP) comes first
+      if (aIsDate && !bIsDate) return 1;
+      if (!aIsDate && !bIsDate) return 0;
+      return new Date(a.deadline!).getTime() - new Date(b.deadline!).getTime();
+    })
     .slice(0, 5);
 
   return (
@@ -146,12 +153,15 @@ export default function DashboardPage() {
                   <span className="pill pill-muted text-[11px] font-bold tabular-nums">{task.id}</span>
                   <div>
                     <p className="text-sm font-medium leading-relaxed">{task.title}</p>
-                    <p className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
+                    <p className={`flex items-center gap-1 text-xs mt-0.5 ${isNaN(new Date(task.deadline!).getTime()) ? "text-coral-foreground font-medium" : "text-muted-foreground"}`}>
                       <Clock size={11} />
-                      {new Date(task.deadline!).toLocaleDateString("ja-JP", {
-                        month: "short",
-                        day: "numeric",
-                      })}
+                      {isNaN(new Date(task.deadline!).getTime())
+                        ? task.deadline
+                        : new Date(task.deadline!).toLocaleDateString("ja-JP", {
+                            month: "short",
+                            day: "numeric",
+                          })
+                      }
                     </p>
                   </div>
                 </div>

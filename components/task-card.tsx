@@ -24,7 +24,9 @@ type TaskCardProps = {
 
 export function TaskCard({ task, onStatusChange }: TaskCardProps) {
   const { t } = useLocale();
-  const isOverdue = task.deadline && new Date(task.deadline) < new Date() && task.status !== "done";
+  const isDateDeadline = task.deadline && !isNaN(new Date(task.deadline).getTime());
+  const isOverdue = isDateDeadline && new Date(task.deadline!) < new Date() && task.status !== "done";
+  const isAsap = task.deadline && !isDateDeadline;
   const statuses: TaskStatus[] = ["todo", "in_progress", "done"];
 
   const statusLabels: Record<TaskStatus, string> = {
@@ -56,14 +58,14 @@ export function TaskCard({ task, onStatusChange }: TaskCardProps) {
             {task.title}
           </p>
           {task.deadline && (
-            <p className={`flex items-center gap-1 text-xs mt-1.5 ${isOverdue ? "text-coral-foreground font-medium" : "text-muted-foreground"}`}>
-              {isOverdue ? <AlertTriangle size={12} /> : <Clock size={12} />}
-              {isOverdue ? t("task.overdue") + " " : t("task.due") + " "}
-              {new Date(task.deadline).toLocaleDateString("ja-JP", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              })}
+            <p className={`flex items-center gap-1 text-xs mt-1.5 ${isOverdue || isAsap ? "text-coral-foreground font-medium" : "text-muted-foreground"}`}>
+              {isOverdue || isAsap ? <AlertTriangle size={12} /> : <Clock size={12} />}
+              {isAsap
+                ? task.deadline
+                : isOverdue
+                ? t("task.overdue") + " " + new Date(task.deadline).toLocaleDateString("ja-JP", { month: "short", day: "numeric", year: "numeric" })
+                : t("task.due") + " " + new Date(task.deadline).toLocaleDateString("ja-JP", { month: "short", day: "numeric", year: "numeric" })
+              }
             </p>
           )}
         </div>

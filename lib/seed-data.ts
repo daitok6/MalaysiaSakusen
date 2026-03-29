@@ -2,7 +2,7 @@ import type { Task, SavingsEntry, VisaStep, TrackerDocument, Settings } from "./
 
 export const seedTasks: Task[] = [
   // ── ビザ・法務 ──────────────────────────────────────────────────────────
-  { id: "V1",  title: "日本で婚姻届を提出",                                   category: "visa", priority: "critical", status: "todo", deadline: "2026-04-30" },
+  { id: "V1",  title: "日本で婚姻届を提出",                                   category: "visa", priority: "critical", status: "todo", deadline: "ASAP" },
   { id: "V2",  title: "パスポートの有効期限確認（二人とも）",                      category: "visa", priority: "critical", status: "todo", deadline: "2026-04-15" },
   { id: "V3",  title: "必要に応じてパスポート更新",                              category: "visa", priority: "high",     status: "todo", deadline: "2026-05-31", dependsOn: ["V2"] },
   { id: "V4",  title: "DE Rantauの最新要件を調査",                             category: "visa", priority: "high",     status: "todo", deadline: "2026-04-15" },
@@ -91,7 +91,7 @@ export const seedSavings: SavingsEntry[] = [
 
 export const seedVisaSteps: VisaStep[] = [
   // フェーズA — 基盤づくり（2026年4〜6月）
-  { id: "VA1", phase: "A", title: "婚姻届を提出（日本で）",                              status: "pending", dueDate: "2026-04-15", sortOrder: 1  },
+  { id: "VA1", phase: "A", title: "婚姻届を提出（日本で）",                              status: "pending", dueDate: "ASAP", sortOrder: 1  },
   { id: "VA2", phase: "A", title: "DataAnnotation/Outlierの仕事を開始",                  status: "pending", dueDate: "2026-04-07", sortOrder: 2  },
   { id: "VA3", phase: "A", title: "USD受取口座を開設（Wise）",                           status: "pending", dueDate: "2026-04-14", sortOrder: 3  },
   { id: "VA4", phase: "A", title: "毎月¥100,000+の貯金を開始",                          status: "pending", dueDate: "2026-04-14", sortOrder: 4  },

@@ -42,6 +42,11 @@ function sortTasks(tasks: Task[], sort: SortOption): Task[] {
         if (!a.deadline && !b.deadline) return 0;
         if (!a.deadline) return 1;
         if (!b.deadline) return -1;
+        const aIsDate = !isNaN(new Date(a.deadline).getTime());
+        const bIsDate = !isNaN(new Date(b.deadline).getTime());
+        if (!aIsDate && bIsDate) return -1;
+        if (aIsDate && !bIsDate) return 1;
+        if (!aIsDate && !bIsDate) return 0;
         return new Date(a.deadline).getTime() - new Date(b.deadline).getTime();
       }
       case "status":
