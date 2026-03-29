@@ -1,45 +1,31 @@
-import { Redis } from "@upstash/redis";
+import Redis from "ioredis";
 import type { Task, SavingsEntry, VisaStep, TrackerDocument, Settings } from "./types";
 import { seedTasks, seedSavings, seedVisaSteps, seedDocuments, seedSettings } from "./seed-data";
 
-// Support both old KV_REST_API_* vars and new REDIS_URL from Vercel Redis
-function createRedisClient(): Redis {
-  // Option 1: Upstash REST API vars (preferred)
-  if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
-    return new Redis({
-      url: process.env.KV_REST_API_URL,
-      token: process.env.KV_REST_API_TOKEN,
-    });
-  }
+const redis = new Redis(process.env.REDIS_URL || "redis://localhost:6379", {
+  maxRetriesPerRequest: 3,
+  lazyConnect: true,
+});
 
-  // Option 2: UPSTASH_REDIS_REST_* vars
-  if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
-    return new Redis({
-      url: process.env.UPSTASH_REDIS_REST_URL,
-      token: process.env.UPSTASH_REDIS_REST_TOKEN,
-    });
-  }
-
-  // Option 3: REDIS_URL (Vercel Redis auto-injects this)
-  if (process.env.REDIS_URL) {
-    return Redis.fromEnv();
-  }
-
-  // Fallback: let @upstash/redis try auto-detection
-  return Redis.fromEnv();
+async function get<T>(key: string): Promise<T | null> {
+  const data = await redis.get(key);
+  if (!data) return null;
+  return JSON.parse(data) as T;
 }
 
-const kv = createRedisClient();
+async function set(key: string, value: unknown): Promise<void> {
+  await redis.set(key, JSON.stringify(value));
+}
 
 export async function getTasks(): Promise<Task[]> {
-  const tasks = await kv.get<Task[]>("tasks");
+  const tasks = await get<Task[]>("tasks");
   if (tasks) return tasks;
-  await kv.set("tasks", seedTasks);
+  await set("tasks", seedTasks);
   return seedTasks;
 }
 
 export async function setTasks(tasks: Task[]): Promise<void> {
-  await kv.set("tasks", tasks);
+  await set("tasks", tasks);
 }
 
 export async function updateTask(id: string, updates: Partial<Task>): Promise<Task[]> {
@@ -52,14 +38,14 @@ export async function updateTask(id: string, updates: Partial<Task>): Promise<Ta
 }
 
 export async function getSavings(): Promise<SavingsEntry[]> {
-  const savings = await kv.get<SavingsEntry[]>("savings");
+  const savings = await get<SavingsEntry[]>("savings");
   if (savings) return savings;
-  await kv.set("savings", seedSavings);
+  await set("savings", seedSavings);
   return seedSavings;
 }
 
 export async function setSavings(savings: SavingsEntry[]): Promise<void> {
-  await kv.set("savings", savings);
+  await set("savings", savings);
 }
 
 export async function updateSavingsEntry(
@@ -75,14 +61,14 @@ export async function updateSavingsEntry(
 }
 
 export async function getVisaSteps(): Promise<VisaStep[]> {
-  const steps = await kv.get<VisaStep[]>("visa_steps");
+  const steps = await get<VisaStep[]>("visa_steps");
   if (steps) return steps;
-  await kv.set("visa_steps", seedVisaSteps);
+  await set("visa_steps", seedVisaSteps);
   return seedVisaSteps;
 }
 
 export async function setVisaSteps(steps: VisaStep[]): Promise<void> {
-  await kv.set("visa_steps", steps);
+  await set("visa_steps", steps);
 }
 
 export async function updateVisaStep(
@@ -98,14 +84,14 @@ export async function updateVisaStep(
 }
 
 export async function getDocuments(): Promise<TrackerDocument[]> {
-  const docs = await kv.get<TrackerDocument[]>("documents");
+  const docs = await get<TrackerDocument[]>("documents");
   if (docs) return docs;
-  await kv.set("documents", seedDocuments);
+  await set("documents", seedDocuments);
   return seedDocuments;
 }
 
 export async function setDocuments(docs: TrackerDocument[]): Promise<void> {
-  await kv.set("documents", docs);
+  await set("documents", docs);
 }
 
 export async function updateDocument(
@@ -121,12 +107,12 @@ export async function updateDocument(
 }
 
 export async function getSettings(): Promise<Settings> {
-  const settings = await kv.get<Settings>("settings");
+  const settings = await get<Settings>("settings");
   if (settings) return settings;
-  await kv.set("settings", seedSettings);
+  await set("settings", seedSettings);
   return seedSettings;
 }
 
 export async function setSettings(settings: Settings): Promise<void> {
-  await kv.set("settings", settings);
+  await set("settings", settings);
 }
