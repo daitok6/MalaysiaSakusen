@@ -37,23 +37,21 @@ export function CostComparison() {
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
                   <div
-                    className="h-5 rounded-full bg-coral/60 transition-all duration-1000 ease-out flex items-center justify-end px-2"
-                    style={{ width: `${tokyoWidth}%`, minWidth: "60px" }}
-                  >
-                    <span className="text-[10px] font-bold text-coral-foreground whitespace-nowrap">
-                      <Money amount={tokyoAmounts[i]} from="JPY" />
-                    </span>
-                  </div>
+                    className="h-5 rounded-full bg-coral/60 transition-all duration-1000 ease-out"
+                    style={{ width: `${Math.max(tokyoWidth, 15)}%` }}
+                  />
+                  <span className="text-[10px] font-bold text-coral-foreground whitespace-nowrap shrink-0">
+                    <Money amount={tokyoAmounts[i]} from="JPY" />
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div
-                    className="h-5 rounded-full bg-mint/60 transition-all duration-1000 ease-out flex items-center justify-end px-2"
-                    style={{ width: `${klWidth}%`, minWidth: "60px", animationDelay: "0.2s" }}
-                  >
-                    <span className="text-[10px] font-bold text-mint-foreground whitespace-nowrap">
-                      <Money amount={klAmountsMYR[i]} from="MYR" />
-                    </span>
-                  </div>
+                    className="h-5 rounded-full bg-mint/60 transition-all duration-1000 ease-out"
+                    style={{ width: `${Math.max(klWidth, 15)}%` }}
+                  />
+                  <span className="text-[10px] font-bold text-mint-foreground whitespace-nowrap shrink-0">
+                    <Money amount={klAmountsMYR[i]} from="MYR" />
+                  </span>
                 </div>
               </div>
             </div>
@@ -62,7 +60,7 @@ export function CostComparison() {
       </div>
 
       {/* Totals */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4">
         <div className="glass card-hover text-center">
           <div className="flex items-center justify-center gap-2 mb-2">
             <MapPin size={14} className="text-coral-foreground" />

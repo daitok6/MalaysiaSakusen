@@ -117,34 +117,34 @@ export default function SummaryPage() {
           fallbackSrc="/illustrations/mascots.svg"
           fallbackAlt="Mascot pair celebrating progress"
         >
-          <div className="space-y-2 px-6">
-            <p className="text-8xl md:text-9xl font-bold tracking-tighter gradient-text opacity-30">
+          <div className="space-y-2 px-4">
+            <p className="text-5xl sm:text-7xl md:text-9xl font-bold tracking-tighter gradient-text opacity-30">
               {taskPercent}%
             </p>
-            <h1 className="text-3xl md:text-5xl font-bold tracking-tighter gradient-text">
+            <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-tighter gradient-text">
               {t("summary.title")}
             </h1>
-            <p className="text-muted-foreground text-sm">{t("summary.subtitle")}</p>
+            <p className="text-muted-foreground text-xs sm:text-sm">{t("summary.subtitle")}</p>
           </div>
         </ParallaxHero>
       </div>
 
       {/* Big Numbers — depth effect on highest */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 stagger">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 stagger">
         <TiltCard className={`text-center ${maxStatIdx === 0 ? "scale-105 shadow-xl" : ""}`}>
-          <p className="text-4xl font-bold tracking-tighter gradient-text">{taskPercent}%</p>
+          <p className="text-2xl sm:text-4xl font-bold tracking-tighter gradient-text">{taskPercent}%</p>
           <p className="text-xs text-muted-foreground mt-2 font-medium">{t("summary.tasksComplete")}</p>
         </TiltCard>
         <TiltCard className={`text-center ${maxStatIdx === 1 ? "scale-105 shadow-xl" : ""}`}>
-          <p className="text-4xl font-bold tracking-tighter gradient-text">{savingsPercent}%</p>
+          <p className="text-2xl sm:text-4xl font-bold tracking-tighter gradient-text">{savingsPercent}%</p>
           <p className="text-xs text-muted-foreground mt-2 font-medium">{t("summary.savingsProgress")}</p>
         </TiltCard>
         <TiltCard className={`text-center ${maxStatIdx === 2 ? "scale-105 shadow-xl" : ""}`}>
-          <p className="text-4xl font-bold tracking-tighter gradient-text">{visaPercent}%</p>
+          <p className="text-2xl sm:text-4xl font-bold tracking-tighter gradient-text">{visaPercent}%</p>
           <p className="text-xs text-muted-foreground mt-2 font-medium">{t("summary.visaProgress")}</p>
         </TiltCard>
         <TiltCard className="text-center">
-          <p className="text-4xl font-bold tracking-tighter gradient-text">{docsReady}/{documents.length}</p>
+          <p className="text-2xl sm:text-4xl font-bold tracking-tighter gradient-text">{docsReady}/{documents.length}</p>
           <p className="text-xs text-muted-foreground mt-2 font-medium">{t("summary.docsReady")}</p>
         </TiltCard>
       </div>

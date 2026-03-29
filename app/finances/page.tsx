@@ -68,8 +68,8 @@ export default function FinancesPage() {
           fallbackSrc="/illustrations/piggybank.svg"
           fallbackAlt="3D piggy bank"
         >
-          <div className="space-y-2 px-6">
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tighter gradient-text">
+          <div className="space-y-2 px-4">
+            <h1 className="text-2xl sm:text-4xl md:text-6xl font-bold tracking-tighter gradient-text">
               {t("finances.title")}
             </h1>
             <p className="text-muted-foreground text-sm">{t("finances.subtitle")}</p>

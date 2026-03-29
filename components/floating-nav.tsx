@@ -24,22 +24,22 @@ export function FloatingNav() {
   const { t } = useLocale();
 
   return (
-    <nav className="md:hidden fixed bottom-4 left-4 right-4 z-50">
-      <div className="flex items-center justify-around py-2 px-2 rounded-2xl bg-white/70 backdrop-blur-xl border border-white/30 shadow-lg shadow-lavender/10">
+    <nav className="md:hidden fixed bottom-3 left-3 right-3 z-50">
+      <div className="flex items-center justify-around py-1.5 px-1 rounded-2xl bg-white/70 backdrop-blur-xl border border-white/30 shadow-lg shadow-lavender/10">
         {navItems.map((item) => {
           const active = pathname === item.href;
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-all ${
+              className={`flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-xl transition-all ${
                 active
                   ? "bg-lavender/20 text-foreground"
                   : "text-muted-foreground"
               }`}
             >
-              <item.Icon size={18} strokeWidth={active ? 2.2 : 1.5} />
-              <span className="text-[10px] font-medium">{t(item.key)}</span>
+              <item.Icon size={16} strokeWidth={active ? 2.2 : 1.5} />
+              <span className="text-[9px] font-medium">{t(item.key)}</span>
             </Link>
           );
         })}

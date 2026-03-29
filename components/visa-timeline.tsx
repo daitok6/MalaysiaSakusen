@@ -63,7 +63,7 @@ export function VisaTimeline({ steps, onToggle, onNotesChange }: VisaTimelinePro
               </div>
             </div>
 
-            <div className="ml-4 pl-6 space-y-3 relative">
+            <div className="ml-2 pl-4 sm:ml-4 sm:pl-6 space-y-3 relative">
               {/* Background line */}
               <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-muted" />
               {/* Filled line */}

@@ -77,19 +77,19 @@ export default function DashboardPage() {
           fallbackSrc="/illustrations/globe.svg"
           fallbackAlt="3D Globe showing Tokyo to KL route"
         >
-          <div className="space-y-4 px-6">
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tighter gradient-text">
+          <div className="space-y-3 px-4">
+            <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold tracking-tighter gradient-text">
               {t("dashboard.hero.title")}
             </h1>
-            <p className="text-muted-foreground text-lg">
-              だいと＆こうめ — 東京 → クアラルンプール
+            <p className="text-muted-foreground text-sm sm:text-lg">
+              {t("dashboard.hero.subtitle")}
             </p>
           </div>
         </ParallaxHero>
       </div>
 
       {/* Floating Countdown overlapping hero */}
-      <div className="-mt-16 relative z-20 max-w-sm mx-auto">
+      <div className="-mt-12 sm:-mt-16 relative z-20 max-w-xs sm:max-w-sm mx-auto">
         <Countdown />
       </div>
 

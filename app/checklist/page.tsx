@@ -93,11 +93,11 @@ export default function ChecklistPage() {
           fallbackSrc="/illustrations/clipboard.svg"
           fallbackAlt="3D floating clipboard"
         >
-          <div className="space-y-2 px-6">
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tighter gradient-text">
+          <div className="space-y-2 px-4">
+            <h1 className="text-2xl sm:text-4xl md:text-6xl font-bold tracking-tighter gradient-text">
               {t("checklist.title")}
             </h1>
-            <p className="text-muted-foreground text-sm">{t("checklist.subtitle")}</p>
+            <p className="text-muted-foreground text-xs sm:text-sm">{t("checklist.subtitle")}</p>
           </div>
         </ParallaxHero>
       </div>
@@ -108,14 +108,14 @@ export default function ChecklistPage() {
           onClick={() => setShowFilters(!showFilters)}
           className="glass text-sm font-medium w-full text-center cursor-pointer"
         >
-          {showFilters ? "Hide Filters" : "Show Filters"}
+          {showFilters ? t("checklist.hideFilters") : t("checklist.showFilters")}
         </button>
       </div>
 
       {/* Filters — collapsible on mobile */}
       <div className={`flex gap-2 flex-wrap ${showFilters ? "" : "hidden md:flex"}`}>
         <Select value={filterStatus} onValueChange={(v) => setFilterStatus(v ?? "all")}>
-          <SelectTrigger className="w-[130px] h-9 text-xs rounded-xl border-white/20 bg-white/50 backdrop-blur-sm cursor-pointer">
+          <SelectTrigger className="w-full sm:w-[130px] h-9 text-xs rounded-xl border-white/20 bg-white/50 backdrop-blur-sm cursor-pointer">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
@@ -126,7 +126,7 @@ export default function ChecklistPage() {
           </SelectContent>
         </Select>
         <Select value={filterAssignee} onValueChange={(v) => setFilterAssignee(v ?? "all")}>
-          <SelectTrigger className="w-[130px] h-9 text-xs rounded-xl border-white/20 bg-white/50 backdrop-blur-sm cursor-pointer">
+          <SelectTrigger className="w-full sm:w-[130px] h-9 text-xs rounded-xl border-white/20 bg-white/50 backdrop-blur-sm cursor-pointer">
             <SelectValue placeholder="Assignee" />
           </SelectTrigger>
           <SelectContent>
@@ -137,7 +137,7 @@ export default function ChecklistPage() {
           </SelectContent>
         </Select>
         <Select value={filterPriority} onValueChange={(v) => setFilterPriority(v ?? "all")}>
-          <SelectTrigger className="w-[130px] h-9 text-xs rounded-xl border-white/20 bg-white/50 backdrop-blur-sm cursor-pointer">
+          <SelectTrigger className="w-full sm:w-[130px] h-9 text-xs rounded-xl border-white/20 bg-white/50 backdrop-blur-sm cursor-pointer">
             <SelectValue placeholder="Priority" />
           </SelectTrigger>
           <SelectContent>
@@ -152,7 +152,7 @@ export default function ChecklistPage() {
 
       {/* Floating pill tabs */}
       <Tabs defaultValue="visa">
-        <TabsList className="w-full justify-start overflow-x-auto bg-white/40 backdrop-blur-md border border-white/20 rounded-2xl gap-1 p-1.5">
+        <TabsList className="w-full justify-start overflow-x-auto no-scrollbar bg-white/40 backdrop-blur-md border border-white/20 rounded-2xl gap-0.5 sm:gap-1 p-1 sm:p-1.5 flex-nowrap">
           {categories.map((cat) => {
             const catTasks = tasks.filter((t) => t.category === cat.value);
             const done = catTasks.filter((t) => t.status === "done").length;
@@ -160,11 +160,11 @@ export default function ChecklistPage() {
               <TabsTrigger
                 key={cat.value}
                 value={cat.value}
-                className="text-xs rounded-xl data-[state=active]:bg-white/70 data-[state=active]:text-foreground data-[state=active]:shadow-sm px-4 py-2 gap-1.5 cursor-pointer transition-all"
+                className="text-[11px] sm:text-xs rounded-xl data-[state=active]:bg-white/70 data-[state=active]:text-foreground data-[state=active]:shadow-sm px-2 sm:px-4 py-1.5 sm:py-2 gap-1 sm:gap-1.5 cursor-pointer transition-all shrink-0 whitespace-nowrap"
               >
                 <cat.Icon size={14} />
-                {t(cat.labelKey)}
-                <span className="ml-1 font-bold tabular-nums opacity-60">{done}/{catTasks.length}</span>
+                <span className="hidden sm:inline">{t(cat.labelKey)}</span>
+                <span className="font-bold tabular-nums opacity-60">{done}/{catTasks.length}</span>
               </TabsTrigger>
             );
           })}

@@ -104,11 +104,11 @@ export default function VisaPage() {
           fallbackSrc="/illustrations/passport.svg"
           fallbackAlt="3D passport with visa stamps"
         >
-          <div className="space-y-2 px-6">
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tighter gradient-text">
+          <div className="space-y-2 px-4">
+            <h1 className="text-2xl sm:text-4xl md:text-6xl font-bold tracking-tighter gradient-text">
               {t("visa.title")}
             </h1>
-            <p className="text-muted-foreground text-sm">{t("visa.subtitle")}</p>
+            <p className="text-muted-foreground text-xs sm:text-sm">{t("visa.subtitle")}</p>
           </div>
         </ParallaxHero>
       </div>
@@ -129,7 +129,7 @@ export default function VisaPage() {
         </TiltCard>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8">
         <div className="lg:col-span-2">
           <VisaTimeline
             steps={steps}

@@ -12,6 +12,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     // Dashboard
     "dashboard.loading": "Loading your journey...",
     "dashboard.hero.title": "Your Journey to Malaysia",
+    "dashboard.hero.subtitle": "Daito & Koume — Tokyo → Kuala Lumpur",
     "dashboard.stats.tasks": "Tasks Completed",
     "dashboard.stats.savings": "Savings Progress",
     "dashboard.stats.savingsTarget": "of ¥1,200,000 target",
@@ -40,7 +41,9 @@ export const translations: Record<Locale, Record<string, string>> = {
     "checklist.category.business": "Business",
     "checklist.category.life": "Life & Logistics",
     "checklist.category.tech": "Tech",
-    "checklist.complete": "Boleh! Category complete!",
+    "checklist.complete": "All done! Category complete!",
+    "checklist.showFilters": "Show Filters",
+    "checklist.hideFilters": "Hide Filters",
     "checklist.empty": "No tasks match your filters",
 
     // Task statuses & priorities
@@ -92,7 +95,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     "finances.checkpoint.title": "August Checkpoint Gate",
     "finances.checkpoint.savings": "Savings ≥ ¥400,000",
     "finances.checkpoint.income": "Side income ≥ ¥80,000/mo",
-    "finances.checkpoint.warning": "If not met by August, delay move to December 2026.",
+    "finances.checkpoint.warning": "Not met by August? Move delayed to Dec 2026.",
 
     // Visa
     "visa.loading": "Loading visa tracker...",
@@ -162,6 +165,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     // Dashboard
     "dashboard.loading": "読み込み中...",
     "dashboard.hero.title": "マレーシアへの旅",
+    "dashboard.hero.subtitle": "だいと＆こうめ — 東京 → クアラルンプール",
     "dashboard.stats.tasks": "完了タスク",
     "dashboard.stats.savings": "貯金の進捗",
     "dashboard.stats.savingsTarget": "目標: ¥1,200,000",
@@ -191,6 +195,8 @@ export const translations: Record<Locale, Record<string, string>> = {
     "checklist.category.life": "生活・ロジ",
     "checklist.category.tech": "テック",
     "checklist.complete": "やったね！カテゴリ完了！",
+    "checklist.showFilters": "フィルター表示",
+    "checklist.hideFilters": "フィルター非表示",
     "checklist.empty": "条件に一致するタスクがありません",
 
     // Task statuses & priorities
